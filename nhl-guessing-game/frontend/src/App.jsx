@@ -3,7 +3,7 @@ import { getPlayerData } from './api_calls/api';
 import './App.css'
 import Modal from './popup'
 import HomePage from './homePage';
-
+import PlayerPage from './PlayerComps';
 
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
 
+  // why is the function inside the useEffect
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
@@ -41,7 +42,7 @@ function App() {
     }
   }
   
-  const roundDownPointsToNearestHundred = (num) => {
+  const roundDownPointsToNearestHundred = (num) => {  
     return Math.floor(num / 100) * 100;
   }
 
@@ -73,7 +74,7 @@ function App() {
 
     // make this if statement a function
     let feedbackMessage = "";
-    if (numGuess == player.career_points) {
+    if (numGuess === player.career_points) {
       feedbackMessage = "Correct!";
       console.log("player count: " + playerCount);
 
@@ -118,25 +119,13 @@ function App() {
   
   return (
     <div>
-      <h1>Puckle</h1>
-      <h2>{player.name}</h2>
-      <h3>{count}/5 attempts left</h3>
-      <h3>Points: {bestGuess}</h3>
       
-
-      <div>
-        <ul className='guess-list'>
-          {pastGuesses.map((pastGuess, index) => {
-            return <li key={index}>
-              <div id='guess-list-input'>{pastGuess.guess} - {pastGuess.feedback}
-                {/* <div id='guess-list-feedback'>{pastGuess.feedback}</div> */}
-              </div>
-              
-              </li>
-            
-          })}
-        </ul>
-      </div>
+      <PlayerPage
+        pastGuesses={pastGuesses}
+        player={player}
+        count={count}
+        bestGuess={bestGuess}
+      />
 
       {!showNextButton && <input 
         type="number"
@@ -149,6 +138,7 @@ function App() {
       {/* <button onClick={handleSubmit}>Submit Guess</button> */}
       {showNextButton && <button onClick={handleNextPlayer}>Next</button>}
       {showNextButton && <h3>Total Points: {totalPoints + bestGuess }</h3>}
+      
       <Modal
         isOpen={isModalOpen}
         playerName={player.name}
