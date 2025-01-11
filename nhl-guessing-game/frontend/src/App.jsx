@@ -138,7 +138,7 @@ function App() {
       {/* <button onClick={handleSubmit}>Submit Guess</button> */}
       {showNextButton && <button onClick={handleNextPlayer}>Next</button>}
       {showNextButton && <h3>Total Points: {totalPoints + bestGuess }</h3>}
-      
+
       <Modal
         isOpen={isModalOpen}
         playerName={player.name}
@@ -147,8 +147,6 @@ function App() {
         totalPoints={totalPoints}
         onClose={closeModal}
       />
-
-      
 
     </div>
   )
