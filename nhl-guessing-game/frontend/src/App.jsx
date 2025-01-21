@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { getPlayerData } from './api_calls/api';
 import './App.css'
 import Modal from './popup'
-import HomePage from './homePage';
 import PlayerPage from './PlayerComps';
+import { useActionState } from 'react';
 
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
   const [feedback, setFeedback] = useState("");
   const [pastGuesses, setPastGuesses] = useState([]);
   const [player, setPlayer] = useState('');
+  const [playername, setPlayerName] = useState('');
   const [bestGuess, setBestGuess] = useState(0);
   const [gamePlayersArray, setGamePlayersArray] = useState([]);
   const [playerCount, setPlayerCount] = useState(0);
@@ -27,7 +28,9 @@ function App() {
       try {
           const data = await getPlayerData(); // Fetch player object
           setGamePlayersArray(data);
+          console.log(data[0]);
           setPlayer(data[0]); // Set the entire object in state
+          setPlayerName(data[0].name);
       } catch (error) {
           console.error('Error fetching player data:', error);
       }
@@ -85,7 +88,7 @@ function App() {
         setShowNextButton(true);
       }
     } else {
-      feedbackMessage = numGuess > player.careerPoints ? "Go Lower!" : "Go Higher!" 
+      feedbackMessage = numGuess > player.career_points ? "Go Lower!" : "Go Higher!"; 
     }
 
     setPastGuesses([...pastGuesses, {guess: guess, feedback: feedbackMessage}]);
@@ -102,6 +105,7 @@ function App() {
       return; // game over
     }
       setPlayer(gamePlayersArray[playerCount + 1]);
+      setPlayerName(gamePlayersArray[playerCount + 1].name);
       setPlayerCount(playerCount+1);
       setTotalPoints(totalPoints + bestGuess);
       setBestGuess(0);
@@ -122,7 +126,7 @@ function App() {
       
       <PlayerPage
         pastGuesses={pastGuesses}
-        player={player}
+        player={playername}
         count={count}
         bestGuess={bestGuess}
       />

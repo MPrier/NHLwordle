@@ -11,6 +11,10 @@ function HomePage() {
             <Link to="/app">
                 <button>Top 100 Career Points</button>
             </Link>
+            <Link to="/dailychallenge">
+                <button>Daily Challenge</button>
+            </Link>
+
             {/* <Link to="/app">
                 <button>Best Season Points</button>
             </Link> */}

@@ -56,7 +56,19 @@ app.get("/player/:id", (req, res) => {
     });
 });
 
-
+app.get("/api/dailyplayer", (req, res) => {
+    db.query("SELECT * FROM daily_player", (err, results) => {
+        console.log(results);
+        if (err) {
+            console.log('fuck');
+            res.status(500).send(err);
+        } else if (results.length === 0) {
+            res.status(404).send("Player not found");
+        } else {
+            res.json(results);
+        }
+    });
+});
 
 // Start server
 app.listen(port, () => {
