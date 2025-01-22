@@ -52,6 +52,23 @@
   border-radius: 8px;
 }
 
+#red {
+  background-color: rgb(255, 51, 0);
+}
+
+#lightred {
+  background-color: rgb(160, 110, 110);
+}
+
+#lightgreen {
+  background-color: lightgreen;
+}
+
+#green {
+  background-color: rgb(56, 165, 56);
+}
+
+
 input {
   border: 1px solid black;
   border-radius: 2px;

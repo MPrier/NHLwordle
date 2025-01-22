@@ -13,8 +13,8 @@ const PlayerPage = ({pastGuesses, player, count, bestGuess}) => {
             <div>
                 <ul className='guess-list'>
                     {pastGuesses.map((pastGuess, index) => {
-                        return <li key={index}>
-                            <div id='guess-list-input'>{pastGuess.guess} - {pastGuess.feedback}
+                        return <li key={index} id={pastGuess.color}>
+                            <div>{pastGuess.guess} - {pastGuess.feedback}
                                 {/* <div id='guess-list-feedback'>{pastGuess.feedback}</div> */}
                             </div>
                         </li>

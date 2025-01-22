@@ -50,14 +50,38 @@ function App() {
   }
 
   const points_algo = (guess) => {
-    const diff = Math.abs(guess - player.career_points);
+    const diff = Math.abs(guess - roundDownPointsToNearestHundred(player.career_points));
     const points = 1000 - diff;
     
     if (points > bestGuess) {
       setBestGuess(points);
     }
+
+    return points;
   }
 
+  const handleColor = (points) => {
+    let feedbackMessage = "";
+    let color = "";
+
+    if (points < 250) {
+      color = 'red';
+    }
+    else if (points < 500) {
+      color = 'lightred';
+    }
+    else if (points < 750) {
+      color = 'lightgreen';
+    }
+    else {
+      color = 'green';
+    }
+
+    return color;
+
+  }
+
+  // TODO: Make feedback function
   const handleSubmit = () => {
     const remainingGuesses = count - 1;
 
@@ -73,12 +97,15 @@ function App() {
     
     setCount(remainingGuesses);
     const numGuess = parseInt(guess, 10);
-    points_algo(numGuess);
+    let points = points_algo(numGuess);
 
     // make this if statement a function
     let feedbackMessage = "";
-    if (numGuess === player.career_points) {
+    let color = handleColor(points);
+    let roundedDownCareerPoints = roundDownPointsToNearestHundred(player.career_points);
+    if (numGuess >= roundedDownCareerPoints && numGuess <= roundedDownCareerPoints) {
       feedbackMessage = "Correct!";
+      
       console.log("player count: " + playerCount);
 
       if (playerCount + 1 >= 3) {
@@ -89,9 +116,10 @@ function App() {
       }
     } else {
       feedbackMessage = numGuess > player.career_points ? "Go Lower!" : "Go Higher!"; 
+
     }
 
-    setPastGuesses([...pastGuesses, {guess: guess, feedback: feedbackMessage}]);
+    setPastGuesses([...pastGuesses, {guess: guess, feedback: feedbackMessage, color: color}]);
     setFeedback(feedbackMessage);
     setGuess("");
   
