@@ -10,7 +10,6 @@ function TitleBar() {
             <h1>Puckle</h1>
             <button>? </button>
         </div>
-
     )
 }
 
@@ -20,16 +19,15 @@ function PlayerSection({ image, text, name }) {
             <img src={image} alt={text} />
             <h2>{name}</h2>
         </div>
-
     )
 }
 
 function AttemptsAndPoints({ attempts, points }) {
     return (
-        <div>
+        <>
             <h3>{attempts}/5 attempts remaining</h3>
             <h3>Points: {points}</h3>
-        </div>
+        </>
     )
 }
 
@@ -45,7 +43,7 @@ function InputRow({ guess, colorFeedback, arrowDirection }) {
             width: '200px', // Adjust the size as needed
             height: '50px',
             borderRadius: '8px',
-            backgroundColor: '#007BFF',
+            backgroundColor: "grey",
             marginRight: '10px',
             justifyContent: 'center', // Center horizontally
             alignItems: 'center', // Center vertically
@@ -61,21 +59,45 @@ function InputRow({ guess, colorFeedback, arrowDirection }) {
     };
 
     return (
-        <div>
+        <>
             <li style={styles.row}>
                 <div style={styles.rectangle1}>{guess}</div>
-                <div style={styles.rectangle2}>upies</div>
+                <div style={styles.rectangle2}>{arrowDirection}</div>
             </li>
+        </>
+    )
+}
+
+function InputBar() {
+    return (
+        <>
+            <input type="number" placeholder='Enter Career Points' autoFocus />
+        </>
+    )
+}
+
+function InputTable({points}) {
+    console.log(points);
+    return (
+        <div>
+            <InputRow guess={1500} colorFeedback="red" arrowDirection="up" />
+            <InputRow guess={points} colorFeedback="green" arrowDirection="down" />
+            <h1>{points}</h1>
+            <InputBar />
         </div>
     )
 }
-function StaticApp() {
+
+function StaticApp({playerInfo}) {
+    console.log(playerInfo.careerPoints);
+    console.log(parseInt(playerInfo.careerPoints,10));
+    console.log(playerInfo);
     return (
         <div id="page">
             <TitleBar />
-            <PlayerSection image={image} text="Example" name="The Great One" />
+            <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
             <AttemptsAndPoints attempts={3} points={150} />
-            <InputRow guess={1500} colorFeedback="red" arrowDirection="up" />
+            <InputTable points={playerInfo.careerPoints} />
         </div>
 
     )

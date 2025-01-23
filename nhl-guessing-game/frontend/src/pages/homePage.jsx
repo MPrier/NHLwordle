@@ -18,6 +18,10 @@ function HomePage() {
                 <button>Static Page</button>
             </Link>
 
+            <Link to="/gamepage">
+                <button>Game Bitch</button>
+            </Link>
+
             {/* <Link to="/app">
                 <button>Best Season Points</button>
             </Link> */}
