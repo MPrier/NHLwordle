@@ -36,11 +36,12 @@ function AttemptsAndPoints({ attempts, points, userInputAndFeedback }) {
 function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 
     console.log(index);
+    console.log(colorFeedback);
     return (
         <>
             <li className='row' key={index}>
                 <div className='rectangle1'>{guess}</div>
-                <div className='rectangle2'>{arrowDirection}</div>
+                <div className={`rectangle2 rectangle2-${colorFeedback}`}>{arrowDirection}</div>
             </li>
         </>
     )
@@ -65,7 +66,7 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow index={index} guess={pastGuess.guessNumber} arrowDirection={pastGuess.ArrowFeedback }/>
+                    return <InputRow index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback }/>
                 })}
             </ul>
             { !isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>}
@@ -76,7 +77,7 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
 function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
     // console.log(e.target.value);
     if (e.key === 'Enter' && e.target.value) {
-        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'red', ArrowFeedback: 'up'}])
+        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'yellow', ArrowFeedback: 'up'}])
         e.target.value = '';
     }
 }

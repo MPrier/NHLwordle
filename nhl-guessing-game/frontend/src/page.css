@@ -45,6 +45,19 @@ ul {
     align-items: center;
 }
 
+/* Variations for rectangle2 */
+.rectangle2-red {
+    background-color: red;
+}
+
+.rectangle2-yellow {
+    background-color: yellow;
+}
+
+.rectangle2-green {
+    background-color: green;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
