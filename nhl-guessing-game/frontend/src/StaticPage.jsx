@@ -85,20 +85,19 @@ function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
 function StaticApp({ playerInfo }) {
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
+    const [gameOverAnimationText, setGameOverAnimationText] = useState('');
 
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {
-        if (userInputAndFeedback.length === 5) {
-            setIsAnimationTriggered(true);
-        } else if (
-            userInputAndFeedback.some(
-                (feedback) => parseInt(feedback.guessNumber) === playerInfo.careerPoints
-            ) 
-        ) {
+        if (userInputAndFeedback.some((feedback) => parseInt(feedback.guessNumber) === playerInfo.careerPoints)) {
             console.log(playerInfo.careerPoints);
-
+            setGameOverAnimationText("You Win! :)");
             setIsAnimationTriggered(true);
         }
+        else if (userInputAndFeedback.length === 5) {
+            setGameOverAnimationText('You Lose :(')
+            setIsAnimationTriggered(true);
+        } 
     }
 
     useEffect(() => {
@@ -112,7 +111,13 @@ function StaticApp({ playerInfo }) {
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
             <AttemptsAndPoints attempts={3} points={150} userInputAndFeedback={userInputAndFeedback} />
-            {isAnimationTriggered && <div>You Win! Congratualtions</div>}
+            {isAnimationTriggered && 
+                <div className='animation'>
+                    <div >{gameOverAnimationText}</div>
+                    <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
+                </div>
+            
+            }
             <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered}/>
         </div>
 
