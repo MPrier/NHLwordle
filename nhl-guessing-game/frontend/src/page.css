@@ -1,3 +1,46 @@
 #page {
     padding: 0;
+    max-width: 300px;
+}
+
+ul {
+    padding: 0;
+    list-style-type:none
+}
+
+/* .rectangle2 {
+    width: 30%;
+    height: 50px;
+}
+
+.rectangle1 {
+    width: 60%;
+    height: 50px;
+} */
+
+.row {
+    display: flex;
+    align-items: center;
+    padding: 2%;
+}
+
+.rectangle1 {
+    width: 60%; /* Adjusted to stay within body boundaries */
+    height: 50px;
+    border-radius: 8px;
+    background-color: grey;
+    margin-right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rectangle2 {
+    width: 35%; /* Adjusted to stay within body boundaries */
+    height: 50px;
+    border-radius: 8px;
+    background-color: #28A745;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

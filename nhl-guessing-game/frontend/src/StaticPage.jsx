@@ -22,47 +22,25 @@ function PlayerSection({ image, text, name }) {
     )
 }
 
-function AttemptsAndPoints({ attempts, points }) {
+function AttemptsAndPoints({ attempts, points, userInputAndFeedback }) {
+    const count = 5 - userInputAndFeedback.length;
     return (
         <>
-            <h3>{attempts}/5 attempts remaining</h3>
-            <h3>Points: {points}</h3>
+            <h3>{count}/5 attempts remaining</h3>
+            {/* <h3>Points: {points}</h3> */}
         </>
     )
 }
 
+// TODO add color feedback to the style of rectange 2. get picture for arrow direction. fix styling so it doesn't 
 function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 
-    const styles = {
-        row: {
-            display: 'flex',
-            alignItems: 'center',
-            padding: '10px',
-        },
-        rectangle1: {
-            width: '200px', // Adjust the size as needed
-            height: '50px',
-            borderRadius: '8px',
-            backgroundColor: "grey",
-            marginRight: '10px',
-            justifyContent: 'center', // Center horizontally
-            alignItems: 'center', // Center vertically
-        },
-        rectangle2: {
-            width: '100px', // Half the width of rectangle1
-            height: '50px',
-            borderRadius: '8px',
-            backgroundColor: '#28A745',
-            justifyContent: 'center', // Center horizontally
-            alignItems: 'center', // Center vertically
-        },
-    };
     console.log(index);
     return (
         <>
-            <li style={styles.row} key={index}>
-                <div style={styles.rectangle1}>{guess}</div>
-                <div style={styles.rectangle2}>{arrowDirection}</div>
+            <li className='row' key={index}>
+                <div className='rectangle1'>{guess}</div>
+                <div className='rectangle2'>{arrowDirection}</div>
             </li>
         </>
     )
@@ -78,19 +56,20 @@ function InputBar({userInputAndFeedback, setUserInputAndFeedback}) {
     )
 }
 
-function InputTable({ userInputAndFeedback, setUserInputAndFeedback }) {
+function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimationTriggered }) {
 
     console.log(userInputAndFeedback)
     
+    
     return (
-        <div>
+        <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
                     return <InputRow index={index} guess={pastGuess.guessNumber} arrowDirection={pastGuess.ArrowFeedback }/>
                 })}
             </ul>
-            <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>
-        </div>
+            { !isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>}
+        </>
     )
 }
 
@@ -98,20 +77,43 @@ function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
     // console.log(e.target.value);
     if (e.key === 'Enter' && e.target.value) {
         setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'red', ArrowFeedback: 'up'}])
+        e.target.value = '';
     }
 }
 
-function StaticApp({ playerInfo }) {
-    const [userInputAndFeedback, setUserInputAndFeedback] = useState([{guessNumber: 1300, colorFeedback: 'red', ArrowFeedback: 'up'},{guessNumber: 2200, colorFeedback: 'green', ArrowFeedback: 'down'}])
 
-    // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 2200, colorFeedback: 'green', ArrowFeedback: 'down'}]);
-    
+function StaticApp({ playerInfo }) {
+    const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
+    const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
+
+    //  TODO FIX. chatgpt wrote this and it is not readable at all
+    function checkGameState() {
+        if (userInputAndFeedback.length === 5) {
+            setIsAnimationTriggered(true);
+        } else if (
+            userInputAndFeedback.some(
+                (feedback) => parseInt(feedback.guessNumber) === playerInfo.careerPoints
+            ) 
+        ) {
+            console.log(playerInfo.careerPoints);
+
+            setIsAnimationTriggered(true);
+        }
+    }
+
+    useEffect(() => {
+        checkGameState();
+
+        
+    }, [userInputAndFeedback]);
+
     return (
         <div id="page">
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
-            <AttemptsAndPoints attempts={3} points={150} />
-            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>
+            <AttemptsAndPoints attempts={3} points={150} userInputAndFeedback={userInputAndFeedback} />
+            {isAnimationTriggered && <div>You Win! Congratualtions</div>}
+            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered}/>
         </div>
 
     )
