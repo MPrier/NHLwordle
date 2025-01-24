@@ -11,9 +11,6 @@ function GamePage() {
             const fetchPlayerData = async () => {
               try {
                   const data = await getDailyPlayerData(); // Fetch player object
-                  console.log("fuckin data:" + data[0].id);
-                  console.log(JSON.stringify(data[0]));
-                  
                   setPlayerInfo({...playerInfo, name: data[0].name, careerPoints: data[0].career_points})
               } catch (error) {
                   console.error('Error fetching player data:', error);
@@ -26,7 +23,7 @@ function GamePage() {
     // let playerInfo = {image: image, name:'OOO', careerPoint: 2587};
     console.log(playerInfo);
     return (
-        <StaticApp playerInfo={playerInfo}/>
+        <StaticApp playerInfo={playerInfo} />
     )
 }
 

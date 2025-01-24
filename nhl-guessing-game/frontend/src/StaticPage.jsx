@@ -31,7 +31,7 @@ function AttemptsAndPoints({ attempts, points }) {
     )
 }
 
-function InputRow({ guess, colorFeedback, arrowDirection }) {
+function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 
     const styles = {
         row: {
@@ -57,10 +57,10 @@ function InputRow({ guess, colorFeedback, arrowDirection }) {
             alignItems: 'center', // Center vertically
         },
     };
-
+    console.log(index);
     return (
         <>
-            <li style={styles.row}>
+            <li style={styles.row} key={index}>
                 <div style={styles.rectangle1}>{guess}</div>
                 <div style={styles.rectangle2}>{arrowDirection}</div>
             </li>
@@ -68,36 +68,50 @@ function InputRow({ guess, colorFeedback, arrowDirection }) {
     )
 }
 
-function InputBar() {
+function InputBar({userInputAndFeedback, setUserInputAndFeedback}) {
+    console.log(userInputAndFeedback);
+    // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 69}])
     return (
         <>
-            <input type="number" placeholder='Enter Career Points' autoFocus />
+            <input type="number" placeholder='Enter Career Points' autoFocus onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback)} />
         </>
     )
 }
 
-function InputTable({points}) {
-    console.log(points);
+function InputTable({ userInputAndFeedback, setUserInputAndFeedback }) {
+
+    console.log(userInputAndFeedback)
+    
     return (
         <div>
-            <InputRow guess={1500} colorFeedback="red" arrowDirection="up" />
-            <InputRow guess={points} colorFeedback="green" arrowDirection="down" />
-            <h1>{points}</h1>
-            <InputBar />
+            <ul>
+                {userInputAndFeedback.map((pastGuess, index) => {
+                    return <InputRow index={index} guess={pastGuess.guessNumber} arrowDirection={pastGuess.ArrowFeedback }/>
+                })}
+            </ul>
+            <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>
         </div>
     )
 }
 
-function StaticApp({playerInfo}) {
-    console.log(playerInfo.careerPoints);
-    console.log(parseInt(playerInfo.careerPoints,10));
-    console.log(playerInfo);
+function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
+    // console.log(e.target.value);
+    if (e.key === 'Enter' && e.target.value) {
+        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'red', ArrowFeedback: 'up'}])
+    }
+}
+
+function StaticApp({ playerInfo }) {
+    const [userInputAndFeedback, setUserInputAndFeedback] = useState([{guessNumber: 1300, colorFeedback: 'red', ArrowFeedback: 'up'},{guessNumber: 2200, colorFeedback: 'green', ArrowFeedback: 'down'}])
+
+    // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 2200, colorFeedback: 'green', ArrowFeedback: 'down'}]);
+    
     return (
         <div id="page">
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
             <AttemptsAndPoints attempts={3} points={150} />
-            <InputTable points={playerInfo.careerPoints} />
+            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>
         </div>
 
     )
