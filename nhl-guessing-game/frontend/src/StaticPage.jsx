@@ -103,7 +103,7 @@ function feedbackHandler(careerPoints, userGuess) {
     else {
         colorFeedback = "red";
     }
-    
+
     const arrowFeedback = colorFeedback === "green"
         ? "correct"
         : careerPoints > userGuess ? "up" : "down";
@@ -119,8 +119,8 @@ function StaticApp() {
 
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {
-        if (userInputAndFeedback.some((feedback) => parseInt(feedback.guessNumber) === playerInfo.careerPoints)) {
-            console.log(playerInfo.careerPoints);
+        if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
+            
             setGameOverAnimationText("You Win! :)");
             setIsAnimationTriggered(true);
         }
