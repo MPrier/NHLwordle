@@ -79,12 +79,19 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
 
 function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints) {
     if (e.key === 'Enter' && e.target.value) {
-        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'yellow', ArrowFeedback: 'up'}])
+        const arrowFeedback = feedbackHandler(careerPoints, e.target.value);
+        // TODO add Feedback handler to provide accerate feedback
+        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'yellow', ArrowFeedback: arrowFeedback}])
         e.target.value = '';
     }
 }
 
+function feedbackHandler(careerPoints, userGuess) {
+    const difference = Math.abs
+    const arrowFeedback = careerPoints > userGuess ? "up" : "down";
+    return arrowFeedback;
 
+}
 function StaticApp() {
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
