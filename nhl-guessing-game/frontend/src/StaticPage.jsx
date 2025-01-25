@@ -48,7 +48,7 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
     )
 }
 
-function InputBar({userInputAndFeedback, setUserInputAndFeedback}) {
+function InputBar({ userInputAndFeedback, setUserInputAndFeedback }) {
     console.log(userInputAndFeedback);
     let playerInfo = useContext(Context);
     console.log(playerInfo);
@@ -63,33 +63,52 @@ function InputBar({userInputAndFeedback, setUserInputAndFeedback}) {
 function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimationTriggered }) {
 
     console.log(userInputAndFeedback)
-    
-    
+
+
     return (
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback }/>
+                    return <InputRow index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback} />
                 })}
             </ul>
-            { !isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback}/>}
+            {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} />}
         </>
     )
 }
 
 function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints) {
     if (e.key === 'Enter' && e.target.value) {
-        const arrowFeedback = feedbackHandler(careerPoints, e.target.value);
+        const feedback = feedbackHandler(careerPoints, e.target.value);
         // TODO add Feedback handler to provide accerate feedback
-        setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'yellow', ArrowFeedback: arrowFeedback}])
+        setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback[0], ArrowFeedback: feedback[1] }])
         e.target.value = '';
     }
 }
 
 function feedbackHandler(careerPoints, userGuess) {
-    const difference = Math.abs
-    const arrowFeedback = careerPoints > userGuess ? "up" : "down";
-    return arrowFeedback;
+    careerPoints = Number(careerPoints);
+    userGuess = Number(userGuess);
+    const difference = Math.abs(careerPoints - userGuess);
+    const average = (careerPoints + userGuess) / 2;
+    const percentageDifference = (difference / average) * 100;
+
+    let colorFeedback;
+    if (percentageDifference <= 5) {
+        colorFeedback = "green";
+    }
+    else if (percentageDifference <= 25) {
+        colorFeedback = "yellow";
+    }
+    else {
+        colorFeedback = "red";
+    }
+    
+    const arrowFeedback = colorFeedback === "green"
+        ? "correct"
+        : careerPoints > userGuess ? "up" : "down";
+
+    return [colorFeedback, arrowFeedback];
 
 }
 function StaticApp() {
@@ -108,13 +127,13 @@ function StaticApp() {
         else if (userInputAndFeedback.length === 5) {
             setGameOverAnimationText('You Lose :(')
             setIsAnimationTriggered(true);
-        } 
+        }
     }
 
     useEffect(() => {
         checkGameState();
 
-        
+
     }, [userInputAndFeedback]);
 
     return (
@@ -122,14 +141,14 @@ function StaticApp() {
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
             <AttemptsAndPoints attempts={3} points={150} userInputAndFeedback={userInputAndFeedback} />
-            {isAnimationTriggered && 
+            {isAnimationTriggered &&
                 <div className='animation'>
                     <div >{gameOverAnimationText}</div>
                     <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
                 </div>
-            
+
             }
-            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered}/>
+            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered} />
         </div>
 
     )
