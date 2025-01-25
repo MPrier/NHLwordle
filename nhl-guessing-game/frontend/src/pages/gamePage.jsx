@@ -1,7 +1,9 @@
 import StaticApp from "../StaticPage";
 import image from "../img/image.png";
 import { getDailyPlayerData } from "../api_calls/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
+
+export const Context = createContext();
 
 function GamePage() {
     const [playerInfo, setPlayerInfo] = useState({image: image});
@@ -20,10 +22,13 @@ function GamePage() {
           fetchPlayerData();
           }, [])
     
-    // let playerInfo = {image: image, name:'OOO', careerPoint: 2587};
+    
     console.log(playerInfo);
     return (
-        <StaticApp playerInfo={playerInfo} />
+        <Context.Provider value={playerInfo}>
+            <StaticApp />
+        </Context.Provider>
+        
     )
 }
 

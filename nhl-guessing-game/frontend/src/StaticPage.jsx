@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import "./components/Header.css";
 import "./page.css";
 import image from './img/image.png';
+import { Context } from './pages/gamePage';
 
 function TitleBar() {
     return (
@@ -49,10 +50,12 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 
 function InputBar({userInputAndFeedback, setUserInputAndFeedback}) {
     console.log(userInputAndFeedback);
+    let playerInfo = useContext(Context);
+    console.log(playerInfo);
     // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 69}])
     return (
         <>
-            <input type="number" placeholder='Enter Career Points' autoFocus onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback)} />
+            <input type="number" placeholder='Enter Career Points' autoFocus onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints)} />
         </>
     )
 }
@@ -74,8 +77,7 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
     )
 }
 
-function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
-    // console.log(e.target.value);
+function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints) {
     if (e.key === 'Enter' && e.target.value) {
         setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: e.target.value, colorFeedback: 'yellow', ArrowFeedback: 'up'}])
         e.target.value = '';
@@ -83,10 +85,11 @@ function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback) {
 }
 
 
-function StaticApp({ playerInfo }) {
+function StaticApp() {
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
+    const playerInfo = useContext(Context);
 
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {
