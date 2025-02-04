@@ -92,7 +92,7 @@ function feedbackHandler(careerPoints, userGuess) {
     const difference = Math.abs(careerPoints - userGuess);
     const average = (careerPoints + userGuess) / 2;
     const percentageDifference = (difference / average) * 100;
-
+    console.log(percentageDifference);
     let colorFeedback;
     if (percentageDifference <= 5) {
         colorFeedback = "green";
@@ -111,12 +111,12 @@ function feedbackHandler(careerPoints, userGuess) {
     return [colorFeedback, arrowFeedback];
 
 }
-function StaticApp() {
+function StaticApp(didUserPlayToday, setDidUserPlayToday) {
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
     const playerInfo = useContext(Context);
-
+    console.log("didUserPlayToday " + JSON.stringify(didUserPlayToday));
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {
         if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
