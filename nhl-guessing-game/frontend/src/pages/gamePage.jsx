@@ -8,15 +8,6 @@ export const Context = createContext();
 
 function GamePage() {
     const [playerInfo, setPlayerInfo] = useState({ image: image });
-    const [didUserPlayToday, setDidUserPlayToday] = useState(() => {
-        let user;
-        if (localStorage.getItem("didUserPlayToday") === true) {
-            user = true;
-        } else {
-            user = false;
-        }
-        return user;
-    });
 
     useEffect(() => {
         const fetchPlayerData = async () => {
@@ -31,16 +22,10 @@ function GamePage() {
         fetchPlayerData();
     }, [])
 
-    useEffect(() => {
-        localStorage.setItem("didUserPlayToday", didUserPlayToday);
-    }, [didUserPlayToday]);
-
     return (
         <ContextProvider>
             <Context.Provider value={playerInfo}>
-                <StaticApp
-                didUserPlayToday={didUserPlayToday}
-                setDidUserPlayToday={setDidUserPlayToday} />
+                <StaticApp />
             </Context.Provider>
         </ContextProvider>
         

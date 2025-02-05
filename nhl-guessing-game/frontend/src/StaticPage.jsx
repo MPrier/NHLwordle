@@ -24,7 +24,7 @@ function PlayerSection({ image, text, name }) {
     )
 }
 
-function AttemptsAndPoints({ attempts, points, userInputAndFeedback }) {
+function AttemptsAndPoints({ userInputAndFeedback }) {
     const count = 5 - userInputAndFeedback.length;
     return (
         <>
@@ -113,7 +113,7 @@ function feedbackHandler(careerPoints, userGuess) {
     return [colorFeedback, arrowFeedback];
 
 }
-function StaticApp(didUserPlayToday, setDidUserPlayToday) {
+function StaticApp() {
     // const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
@@ -121,9 +121,6 @@ function StaticApp(didUserPlayToday, setDidUserPlayToday) {
     const {userInputAndFeedback, setUserInputAndFeedback} = useContext(UserContext);
     
     
-    
-    
-    console.log("didUserPlayToday " + JSON.stringify(didUserPlayToday));
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {
         if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
@@ -147,7 +144,7 @@ function StaticApp(didUserPlayToday, setDidUserPlayToday) {
         <div id="page">
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
-            <AttemptsAndPoints attempts={3} points={150} userInputAndFeedback={userInputAndFeedback} />
+            <AttemptsAndPoints userInputAndFeedback={userInputAndFeedback} />
             {isAnimationTriggered &&
                 <div className='animation'>
                     <div >{gameOverAnimationText}</div>
