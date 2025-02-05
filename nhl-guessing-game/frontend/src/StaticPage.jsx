@@ -3,6 +3,7 @@ import "./components/Header.css";
 import "./page.css";
 import image from './img/image.png';
 import { Context } from './pages/gamePage';
+import { UserContext } from './context/context';
 
 function TitleBar() {
     return (
@@ -81,6 +82,7 @@ function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerP
     if (e.key === 'Enter' && e.target.value) {
         const feedback = feedbackHandler(careerPoints, e.target.value);
         // TODO add Feedback handler to provide accerate feedback
+        localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback[0], ArrowFeedback: feedback[1] }]))
         setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback[0], ArrowFeedback: feedback[1] }])
         e.target.value = '';
     }
@@ -112,10 +114,15 @@ function feedbackHandler(careerPoints, userGuess) {
 
 }
 function StaticApp(didUserPlayToday, setDidUserPlayToday) {
-    const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
+    // const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
     const playerInfo = useContext(Context);
+    const {userInputAndFeedback, setUserInputAndFeedback} = useContext(UserContext);
+    
+    
+    
+    
     console.log("didUserPlayToday " + JSON.stringify(didUserPlayToday));
     //  TODO FIX. chatgpt wrote this and it is not readable at all
     function checkGameState() {

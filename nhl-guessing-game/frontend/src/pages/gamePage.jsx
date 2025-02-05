@@ -2,6 +2,7 @@ import StaticApp from "../StaticPage";
 import image from "../img/image.png";
 import { getDailyPlayerData } from "../api_calls/api";
 import { useEffect, useState, createContext } from "react";
+import { ContextProvider } from "../context/context";
 
 export const Context = createContext();
 
@@ -35,11 +36,14 @@ function GamePage() {
     }, [didUserPlayToday]);
 
     return (
-        <Context.Provider value={playerInfo}>
-            <StaticApp
+        <ContextProvider>
+            <Context.Provider value={playerInfo}>
+                <StaticApp
                 didUserPlayToday={didUserPlayToday}
                 setDidUserPlayToday={setDidUserPlayToday} />
-        </Context.Provider>
+            </Context.Provider>
+        </ContextProvider>
+        
 
     )
 }
