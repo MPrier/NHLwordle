@@ -28,16 +28,12 @@ function AttemptsAndPoints({ userInputAndFeedback }) {
     return (
         <>
             <h3>{count}/5 attempts remaining</h3>
-            {/* <h3>Points: {points}</h3> */}
         </>
     )
 }
 
-// TODO add color feedback to the style of rectange 2. get picture for arrow direction. fix styling so it doesn't 
+// TODO get picture for arrow direction. fix styling  
 function InputRow({ guess, colorFeedback, arrowDirection, index }) {
-
-    console.log(index);
-    console.log(colorFeedback);
     return (
         <>
             <li className='row' key={index}>
@@ -51,7 +47,7 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 function InputBar({ userInputAndFeedback, setUserInputAndFeedback }) {
     let context = useContext(UserContext);
     let playerInfo = context.playerInfo;
-    // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 69}])
+    
     return (
         <>
             <input type="number" placeholder='Enter Career Points' autoFocus onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints)} />
@@ -60,9 +56,6 @@ function InputBar({ userInputAndFeedback, setUserInputAndFeedback }) {
 }
 
 function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimationTriggered }) {
-
-    console.log(userInputAndFeedback)
-
     return (
         <>
             <ul>
@@ -78,10 +71,21 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
 function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints) {
     if (e.key === 'Enter' && e.target.value) {
         const feedback = feedbackHandler(careerPoints, e.target.value);
-        // TODO add Feedback handler to provide accerate feedback
-        localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback[0], ArrowFeedback: feedback[1] }]))
-        setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback[0], ArrowFeedback: feedback[1] }])
+        localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }]))
+        setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }])
         e.target.value = '';
+    }
+}
+
+function colorFeedback(percentageDifference) {
+    if (percentageDifference <= 5) {
+        return "green";
+    }
+    else if (percentageDifference <= 25) {
+        return "yellow";
+    }
+    else {
+        return "red";
     }
 }
 
@@ -91,50 +95,36 @@ function feedbackHandler(careerPoints, userGuess) {
     const difference = Math.abs(careerPoints - userGuess);
     const average = (careerPoints + userGuess) / 2;
     const percentageDifference = (difference / average) * 100;
-    console.log(percentageDifference);
-    let colorFeedback;
-    if (percentageDifference <= 5) {
-        colorFeedback = "green";
-    }
-    else if (percentageDifference <= 25) {
-        colorFeedback = "yellow";
-    }
-    else {
-        colorFeedback = "red";
-    }
 
-    const arrowFeedback = colorFeedback === "green"
+    let color = colorFeedback(percentageDifference);
+
+    const arrowFeedback = color === "green"
         ? "correct"
         : careerPoints > userGuess ? "up" : "down";
 
-    return [colorFeedback, arrowFeedback];
+    return {color, arrowFeedback};
 
 }
+
+function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered) {
+    if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
+        
+        setGameOverAnimationText("You Win! :)");
+        setIsAnimationTriggered(true);
+    }
+    else if (userInputAndFeedback.length === 5) {
+        setGameOverAnimationText('You Lose :(')
+        setIsAnimationTriggered(true);
+    }
+}
+
 function StaticApp() {
-    // const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
-    
     const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
     
-    
-    //  TODO FIX. chatgpt wrote this and it is not readable at all
-    function checkGameState() {
-        if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
-            
-            setGameOverAnimationText("You Win! :)");
-            setIsAnimationTriggered(true);
-        }
-        else if (userInputAndFeedback.length === 5) {
-            setGameOverAnimationText('You Lose :(')
-            setIsAnimationTriggered(true);
-        }
-    }
-
     useEffect(() => {
-        checkGameState();
-
-
+        checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered);
     }, [userInputAndFeedback]);
 
     return (
@@ -147,11 +137,9 @@ function StaticApp() {
                     <div >{gameOverAnimationText}</div>
                     <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
                 </div>
-
             }
             <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered} />
         </div>
-
     )
 }
 
