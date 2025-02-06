@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import "./components/Header.css";
 import "./page.css";
 import image from './img/image.png';
-import { Context } from './pages/gamePage';
 import { UserContext } from './context/context';
 
 function TitleBar() {
@@ -50,9 +49,8 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
 }
 
 function InputBar({ userInputAndFeedback, setUserInputAndFeedback }) {
-    console.log(userInputAndFeedback);
-    let playerInfo = useContext(Context);
-    console.log(playerInfo);
+    let context = useContext(UserContext);
+    let playerInfo = context.playerInfo;
     // setUserInputAndFeedback([...userInputAndFeedback, {guessNumber: 69}])
     return (
         <>
@@ -65,12 +63,11 @@ function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimation
 
     console.log(userInputAndFeedback)
 
-
     return (
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback} />
+                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback} />
                 })}
             </ul>
             {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} />}
@@ -117,8 +114,8 @@ function StaticApp() {
     // const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
-    const playerInfo = useContext(Context);
-    const {userInputAndFeedback, setUserInputAndFeedback} = useContext(UserContext);
+    
+    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
     
     
     //  TODO FIX. chatgpt wrote this and it is not readable at all
