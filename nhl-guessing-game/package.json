@@ -4,6 +4,7 @@
   },
 
   "scripts": {
+    "build": "cd frontend && npm run build",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd frontend && npm run dev",
     "start:backend": "cd backend && node index.js"
