@@ -9,21 +9,21 @@ function ContextProvider({children}) {
     const [userInputAndFeedback, setUserInputAndFeedback] = useState(() => {
         return JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
     });
-    const [playerInfo, setPlayerInfo] = useState({ image: image });
+    // const [playerInfo, setPlayerInfo] = useState({ image: image });
 
-    useEffect(() => {
-        const fetchPlayerData = async () => {
-            try {
-                const data = await getDailyPlayerData(); // Fetch player object
-                setPlayerInfo({ ...playerInfo, name: data[0].name, careerPoints: data[0].career_points, date: data[0].date_assigned })
-            } catch (error) {
-                console.error('Error fetching player data:', error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchPlayerData = async () => {
+    //         try {
+    //             const data = await getDailyPlayerData(); // Fetch player object
+    //             setPlayerInfo({ ...playerInfo, name: data[0].name, careerPoints: data[0].career_points, date: data[0].date_assigned })
+    //         } catch (error) {
+    //             console.error('Error fetching player data:', error);
+    //         }
+    //     };
 
-        fetchPlayerData();
-    }, [])
-
+    //     fetchPlayerData();
+    // }, [])
+    const playerInfo = {image: image, name: "Farts", careerPoints: 1000}
 
     return <UserContext.Provider value={{userInputAndFeedback, setUserInputAndFeedback, playerInfo}}>
         {children}
