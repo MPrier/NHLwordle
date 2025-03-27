@@ -97,18 +97,13 @@ function feedbackHandler(careerPoints, userGuess) {
     const percentageDifference = (difference / average) * 100;
 
     let color = colorFeedback(percentageDifference);
-
-    const arrowFeedback = color === "green"
-        ? "correct"
-        : careerPoints > userGuess ? "up" : "down";
+    const arrowFeedback = color === "green" ? "correct" : careerPoints > userGuess ? "up" : "down";
 
     return {color, arrowFeedback};
-
 }
 
 function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered) {
     if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
-        
         setGameOverAnimationText("You Win! :)");
         setIsAnimationTriggered(true);
     }
