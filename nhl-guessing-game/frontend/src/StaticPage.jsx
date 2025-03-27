@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import "./components/Header.css";
-import "./page.css";
+import "./css/page.css";
 import image from './img/image.png';
+import "./css/App.css";
+import "./css/index.css";
 import { UserContext } from './context/context';
 
 function TitleBar() {
