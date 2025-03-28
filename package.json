@@ -1,12 +1,14 @@
 {
-  "dependencies": {
-    "concurrently": "^9.1.2"
-  },
-
   "scripts": {
     "build": "cd frontend && npm run build",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd frontend && npm run dev",
     "start:backend": "cd backend && node index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.4.0"
   }
 }
