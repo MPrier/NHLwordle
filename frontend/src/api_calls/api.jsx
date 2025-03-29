@@ -1,5 +1,5 @@
 import axios from 'axios'
-// const BASE_URL = "http://localhost:5000/api"
+const LAMBDA_URL = "https://ea4nstfdljcbmx6wtliy3rkl5q0foapb.lambda-url.us-east-1.on.aws/"
 
 // // Axios instance for custom configuration
 // const apiClient = axios.create({
@@ -22,6 +22,18 @@ export const getPlayerData = async () => {
 
 // Function to fetch player data
 export const getDailyPlayerData = async () => {
+    try {
+        const response = await axios.get(LAMBDA_URL, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(response.data);
+        return response.data; // Return the data from the response
+    } catch (error) {
+        console.error('Error fetching daily player data:', error);
+        throw error; // Propagate the error for further handling
+    }
     // try {
     //     const response = await apiClient.get('/dailyplayer');
     //     console.log(response.data);
