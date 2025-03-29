@@ -28,7 +28,7 @@ export const getDailyPlayerData = async () => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(response.data);
+        // console.log(response.data);
         return response.data; // Return the data from the response
     } catch (error) {
         console.error('Error fetching daily player data:', error);

@@ -6,10 +6,25 @@ import { useEffect } from "react";
 const UserContext = createContext();
 
 function ContextProvider({children}) {
-    const [userInputAndFeedback, setUserInputAndFeedback] = useState(() => {
-        return JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
-    });
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+    const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [playerInfo, setPlayerInfo] = useState({ image: image });
+
+    useEffect(() => {
+        // Check and update localStorage if the date has changed
+        const storedDate = localStorage.getItem("UserInputDate");
+        console.log('Date Change')
+        if (currentDate !== storedDate) {
+            // Date is different, update localStorage and reset user input
+            localStorage.setItem("UserInputDate", currentDate);
+            localStorage.setItem("UserInputAndFeedback", JSON.stringify([])); // Optional: Clear previous feedback
+            setUserInputAndFeedback([]); // Reset the state to empty array
+        } else {
+            // Load feedback if date is the same
+            const storedFeedback = JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
+            setUserInputAndFeedback(storedFeedback);
+        }
+    }, [currentDate]);
 
     useEffect(() => {
         const fetchPlayerData = async () => {
