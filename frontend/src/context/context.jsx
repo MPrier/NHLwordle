@@ -2,23 +2,47 @@ import {createContext, useState } from "react";
 import image from "../img/image.png";
 import { getDailyPlayerData } from "../api_calls/api";
 import { useEffect } from "react";
+import { use } from "react";
 
 const UserContext = createContext();
 
 function ContextProvider({children}) {
-    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+    const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
     const [playerInfo, setPlayerInfo] = useState({ image: image });
+    const [hasFetched, setHasFetched] = useState(false);
+    
+    const fetchPlayerData = async () => {
+        console.log("fetch data")
+        try {
+            const data = await getDailyPlayerData(); // Fetch player object
+            const fetchedPlayerInfo = {
+                ...playerInfo,
+                name: data[0].Name,
+                careerPoints: data[0].CareerPoints,
+                date: data[0].Date,
+            };
+            setPlayerInfo(fetchedPlayerInfo)
+            localStorage.setItem("PlayerInfo", JSON.stringify(fetchedPlayerInfo));
+            
+            setHasFetched(true);
+        } catch (error) {
+            console.error('Error fetching player data:', error);
+        }
+    };
 
     useEffect(() => {
         // Check and update localStorage if the date has changed
         const storedDate = localStorage.getItem("UserInputDate");
-        console.log('Date Change')
+        
         if (currentDate !== storedDate) {
+            console.log('Date Change')
             // Date is different, update localStorage and reset user input
             localStorage.setItem("UserInputDate", currentDate);
             localStorage.setItem("UserInputAndFeedback", JSON.stringify([])); // Optional: Clear previous feedback
             setUserInputAndFeedback([]); // Reset the state to empty array
+            fetchPlayerData();
+            
         } else {
             // Load feedback if date is the same
             const storedFeedback = JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
@@ -27,16 +51,14 @@ function ContextProvider({children}) {
     }, [currentDate]);
 
     useEffect(() => {
-        const fetchPlayerData = async () => {
-            try {
-                const data = await getDailyPlayerData(); // Fetch player object
-                setPlayerInfo({ ...playerInfo, name: data[0].Name, careerPoints: data[0].CareerPoints, date: data[0].Date })
-            } catch (error) {
-                console.error('Error fetching player data:', error);
-            }
-        };
-
-        fetchPlayerData();
+        const storedPlayerInfo = JSON.parse(localStorage.getItem("PlayerInfo"));
+    
+        if (storedPlayerInfo && storedPlayerInfo.name && storedPlayerInfo.careerPoints) {
+            setPlayerInfo(storedPlayerInfo)
+        } else {
+            fetchPlayerData();
+        }
+        
     }, [])
     
     return <UserContext.Provider value={{userInputAndFeedback, setUserInputAndFeedback, playerInfo}}>

@@ -6,12 +6,13 @@ import "./css/App.css";
 import "./css/index.css";
 import { UserContext } from './context/context';
 
+
 function TitleBar() {
     return (
         <div id='header-bar'>
             <button> ? </button>
             <h1>Puckle</h1>
-            <button>? </button>
+            <button>&#127918;</button>
         </div>
     )
 }
@@ -19,7 +20,7 @@ function TitleBar() {
 function PlayerSection({ image, text, name }) {
     return (
         <div>
-            <img src={image} alt={text} />
+            {/* <img src={image} alt={text} /> */}
             <h2>{name}</h2>
         </div>
     )
@@ -46,36 +47,66 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
     )
 }
 
-function InputBar({ userInputAndFeedback, setUserInputAndFeedback }) {
+function InputBar({ userInputAndFeedback, setUserInputAndFeedback, inputValue, setInputValue }) {
     let context = useContext(UserContext);
     let playerInfo = context.playerInfo;
     
     return (
         <>
-            <input type="number" placeholder='Enter Career Points' autoFocus onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints)} />
+            <input type="text" autoFocus placeholder='Enter Career Points' value={inputValue} onInput={(e) => handleChange(e,setInputValue)} onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints, setInputValue)} />
         </>
     )
 }
 
-function InputTable({ userInputAndFeedback, setUserInputAndFeedback, isAnimationTriggered }) {
+function handleArrowFeedbackEmoji(arrowFeedback) {
+    switch(arrowFeedback) {
+        case 'up':
+            return <div>&#11014;</div>
+        case 'down':
+            return <div>&#11015;</div>
+        case 'correct':
+            return <div>&#9989;</div>
+
+    }
+}
+function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
+    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
     return (
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={pastGuess.ArrowFeedback} />
+                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback)} />
                 })}
             </ul>
-            {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} />}
+            {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
         </>
     )
 }
 
-function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints) {
-    if (e.key === 'Enter' && e.target.value) {
-        const feedback = feedbackHandler(careerPoints, e.target.value);
-        localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }]))
-        setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }])
-        e.target.value = '';
+function handleChange(e, setInputValue) {
+    // Remove non-numeric characters
+    const sanitized = e.target.value.replace(/\D/g, '');
+
+  // Limit to 6 characters
+    const trimmed = sanitized.slice(0, 6);
+
+    if (Number(trimmed) === 0) {
+        setInputValue('')
+        return 
+    }
+    setInputValue(trimmed);
+}
+
+function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints, setInputValue) {
+    if (e.key === 'Enter') {
+        const num = Number(e.target.value)
+
+        if (!isNaN(num) && num > 0 && num < 1000000) {
+            const feedback = feedbackHandler(careerPoints, e.target.value);
+            localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }]))
+            setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }])
+            setInputValue('')
+        }
     }
 }
 
@@ -94,6 +125,7 @@ function colorFeedback(percentageDifference) {
 function feedbackHandler(careerPoints, userGuess) {
     careerPoints = Number(careerPoints);
     userGuess = Number(userGuess);
+    
     const difference = Math.abs(careerPoints - userGuess);
     const average = (careerPoints + userGuess) / 2;
     const percentageDifference = (difference / average) * 100;
@@ -119,6 +151,7 @@ function StaticApp() {
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
     const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
+    const [inputValue, setInputValue] = useState('');
     
     useEffect(() => {
         checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered);
@@ -135,7 +168,7 @@ function StaticApp() {
                     <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
                 </div>
             }
-            <InputTable userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} isAnimationTriggered={isAnimationTriggered} />
+            <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />
         </div>
     )
 }
