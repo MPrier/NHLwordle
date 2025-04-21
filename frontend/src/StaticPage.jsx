@@ -5,6 +5,11 @@ import image from './img/image.png';
 import "./css/App.css";
 import "./css/index.css";
 import { UserContext } from './context/context';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faRankingStar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 function TitleBar() {
@@ -12,7 +17,7 @@ function TitleBar() {
         <div id='header-bar'>
             <button> ? </button>
             <h1>Puckle</h1>
-            <button>&#127918;</button>
+            <button><FontAwesomeIcon icon={faRankingStar} style={{color: "#ffffff",}} size='1x'/></button>
         </div>
     )
 }
@@ -41,7 +46,9 @@ function InputRow({ guess, colorFeedback, arrowDirection, index }) {
         <>
             <li className='row' key={index}>
                 <div className='rectangle1'>{guess}</div>
-                <div className={`rectangle2 rectangle2-${colorFeedback}`}>{arrowDirection}</div>
+                <div className='arrow'>{arrowDirection}</div>
+                {/* <div className={`rectangle2 rectangle2-${colorFeedback}`}>{arrowDirection}</div> */}
+                {/* <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='2x'/></div> */}
             </li>
         </>
     )
@@ -58,14 +65,26 @@ function InputBar({ userInputAndFeedback, setUserInputAndFeedback, inputValue, s
     )
 }
 
-function handleArrowFeedbackEmoji(arrowFeedback) {
+function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
     switch(arrowFeedback) {
         case 'up':
-            return <div>&#11014;</div>
+            if (colorFeedback == 'yellow') {
+                return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='3x'/></div>
+            }
+            else {
+                return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#ce1c1c",}} size='3x' /></div>
+            }
+            
         case 'down':
-            return <div>&#11015;</div>
+            if (colorFeedback == 'yellow') {
+                return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#FFD43B",}} size='3x'/></div>
+            }
+            else {
+                return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#ce1c1c",}} size='3x' /></div>
+            }
+
         case 'correct':
-            return <div>&#9989;</div>
+            return <div><FontAwesomeIcon icon={faCheck} style={{color: "#1e8f0f",}} size='3x'/></div>
 
     }
 }
@@ -75,7 +94,7 @@ function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback)} />
+                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)} />
                 })}
             </ul>
             {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
