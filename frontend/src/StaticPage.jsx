@@ -25,7 +25,7 @@ function TitleBar() {
 function PlayerSection({ image, text, name }) {
     return (
         <div>
-            {/* <img src={image} alt={text} /> */}
+            <img src={image} alt={text} />
             <h2>{name}</h2>
         </div>
     )
@@ -41,10 +41,10 @@ function AttemptsAndPoints({ userInputAndFeedback }) {
 }
 
 // TODO get picture for arrow direction. fix styling  
-function InputRow({ guess, colorFeedback, arrowDirection, index }) {
+function InputRow({ guess, colorFeedback, arrowDirection, index, className = ''}) {
     return (
         <>
-            <li className='row' key={index}>
+            <li className={`row ${className}`} key={index}>
                 <div className='rectangle1'>{guess}</div>
                 <div className='arrow'>{arrowDirection}</div>
                 {/* <div className={`rectangle2 rectangle2-${colorFeedback}`}>{arrowDirection}</div> */}
@@ -102,7 +102,14 @@ function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
-                    return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)} />
+                    const isLast = index === userInputAndFeedback.length -1;
+                    return <InputRow 
+                        key={index} 
+                        index={index} 
+                        guess={pastGuess.guessNumber} 
+                        colorFeedback={pastGuess.colorFeedback} 
+                        arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}
+                        className={isLast ? "flip-in" : ""} />
                 })}
                 {!isAnimationTriggered && emptyRows}
             </ul>

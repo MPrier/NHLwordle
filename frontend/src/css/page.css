@@ -1,6 +1,6 @@
 #page {
     padding: 0;
-    max-width: 500px;
+    max-width: 335px;
     margin: auto;
 }
 
@@ -22,9 +22,23 @@ ul {
 .row {
     display: flow-root;
     align-items: center;
-    margin-top: 5%;
+    margin-top: 4%;
+}
+@keyframes flipIn {
+    0% {
+        transform: rotateX(90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotateX(0);
+        opacity: 1;
+    }
 }
 
+.flip-in {
+    animation: flipIn 1s ease-out;
+    transform-origin: top;
+}
 .arrow {
     /* background-color: #28A745; */
     float: right;
