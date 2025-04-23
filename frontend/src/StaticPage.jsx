@@ -24,9 +24,9 @@ function TitleBar() {
 
 function PlayerSection({ image, text, name }) {
     return (
-        <div>
-            <img src={image} alt={text} />
-            <h2>{name}</h2>
+        <div className="hockey-card">
+            <img src={image} alt={text} className='player-image' />
+            <div className='nameplate'>{name}</div>
         </div>
     )
 }
