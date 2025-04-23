@@ -89,15 +89,24 @@ function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
     }
 }
 function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
-    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
+    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
+    console.log(isInitialized);
+    // if (!isInitialized) return 'balls';
+
+    const emptyRows = [];
+    const maxRows = 5;
+    for (let i = userInputAndFeedback.length; i < maxRows; i++) {
+        emptyRows.push(<InputRow key={`empty-${i}`} index={i} guess={""} colorFeedback={[]} arrowDirection={[]} />);
+    }
     return (
         <>
             <ul>
                 {userInputAndFeedback.map((pastGuess, index) => {
                     return <InputRow key={index} index={index} guess={pastGuess.guessNumber} colorFeedback={pastGuess.colorFeedback} arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)} />
                 })}
+                {!isAnimationTriggered && emptyRows}
             </ul>
-            {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
+            {/* {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>} */}
         </>
     )
 }
@@ -169,11 +178,13 @@ function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAni
 function StaticApp() {
     const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
     const [gameOverAnimationText, setGameOverAnimationText] = useState('');
-    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo} = useContext(UserContext);
+    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
     const [inputValue, setInputValue] = useState('');
+    const [ready, setReady] = useState(false)
     
     useEffect(() => {
         checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered);
+        setReady(true)
     }, [userInputAndFeedback]);
 
     return (
@@ -187,7 +198,8 @@ function StaticApp() {
                     <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
                 </div>
             }
-            <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />
+            {isInitialized && ready && <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />}
+            {!isAnimationTriggered && isInitialized && ready && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
         </div>
     )
 }
