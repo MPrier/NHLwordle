@@ -3,9 +3,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom-color: #1c1c1c;
+    border-bottom-color: 5a4c3b;
     border-bottom: ridge;
     border-bottom-width: 5px;
     margin-bottom: 2rem;
-    color: #d4af37;
+    color: #5a4c3b;
+    font-size: x-small;
 }

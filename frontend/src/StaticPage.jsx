@@ -88,34 +88,70 @@ function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
 
     }
 }
-function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
-    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
-    console.log(isInitialized);
-    // if (!isInitialized) return 'balls';
+// function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
+//     const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
+//     console.log(isInitialized);
+//     // if (!isInitialized) return 'balls';
+
+//     const emptyRows = [];
+//     const maxRows = 5;
+//     for (let i = userInputAndFeedback.length; i < maxRows; i++) {
+//         emptyRows.push(<InputRow key={`empty-${i}`} index={i} guess={""} colorFeedback={[]} arrowDirection={[]} />);
+//     }
+//     return (
+//         <>
+//             <ul>
+//                 {userInputAndFeedback.map((pastGuess, index) => {
+//                     const isLast = index === userInputAndFeedback.length -1;
+//                     return <InputRow 
+//                         key={index} 
+//                         index={index} 
+//                         guess={pastGuess.guessNumber} 
+//                         colorFeedback={pastGuess.colorFeedback} 
+//                         arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}
+//                         className={isLast ? "flip-in" : ""} />
+//                 })}
+//                 {!isAnimationTriggered && emptyRows}
+//             </ul>
+//             {/* {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>} */}
+//         </>
+//     )
+// }
+function InputTable({ isAnimationTriggered, inputValue, setInputValue }) {
+    const { userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized } = useContext(UserContext);
 
     const emptyRows = [];
     const maxRows = 5;
     for (let i = userInputAndFeedback.length; i < maxRows; i++) {
-        emptyRows.push(<InputRow key={`empty-${i}`} index={i} guess={""} colorFeedback={[]} arrowDirection={[]} />);
+        emptyRows.push(
+            <div className="input-row stat-row empty" key={`empty-${i}`}>
+                <div className="stat-cell">{i + 1}</div>
+                <div className="stat-cell">—</div>
+                <div className="stat-cell">—</div>
+            </div>
+        );
     }
+
     return (
-        <>
-            <ul>
-                {userInputAndFeedback.map((pastGuess, index) => {
-                    const isLast = index === userInputAndFeedback.length -1;
-                    return <InputRow 
-                        key={index} 
-                        index={index} 
-                        guess={pastGuess.guessNumber} 
-                        colorFeedback={pastGuess.colorFeedback} 
-                        arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}
-                        className={isLast ? "flip-in" : ""} />
-                })}
-                {!isAnimationTriggered && emptyRows}
-            </ul>
-            {/* {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>} */}
-        </>
-    )
+        <div className="input-table">
+            <div className="stat-header">
+                <div className="stat-cell">Guess #</div>
+                <div className="stat-cell">Guess</div>
+                <div className="stat-cell">Accuracy</div>
+            </div>
+            {userInputAndFeedback.map((pastGuess, index) => {
+                const isLast = index === userInputAndFeedback.length - 1;
+                return (
+                    <div className={`input-row stat-row ${isLast ? "flip-in" : ""}`} key={index}>
+                        <div className="stat-cell">{index + 1}</div>
+                        <div className="stat-cell">{pastGuess.guessNumber}</div>
+                        <div className="stat-cell">{handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}</div>
+                    </div>
+                );
+            })}
+            {!isAnimationTriggered && emptyRows}
+        </div>
+    );
 }
 
 function handleChange(e, setInputValue) {
@@ -198,15 +234,21 @@ function StaticApp() {
         <div id="page">
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
-            <AttemptsAndPoints userInputAndFeedback={userInputAndFeedback} />
+            {/* <AttemptsAndPoints userInputAndFeedback={userInputAndFeedback} /> */}
+            {/* {isAnimationTriggered &&
+                <div className='animation'>
+                    <div >{gameOverAnimationText}</div>
+                    <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
+                </div>
+            } */}
+            {isInitialized && ready && <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />}
+            {!isAnimationTriggered && isInitialized && ready && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
             {isAnimationTriggered &&
                 <div className='animation'>
                     <div >{gameOverAnimationText}</div>
                     <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
                 </div>
             }
-            {isInitialized && ready && <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />}
-            {!isAnimationTriggered && isInitialized && ready && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
         </div>
     )
 }
