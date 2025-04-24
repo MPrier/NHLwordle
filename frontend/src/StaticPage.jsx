@@ -60,7 +60,7 @@ function InputBar({ userInputAndFeedback, setUserInputAndFeedback, inputValue, s
     
     return (
         <>
-            <input type="text" autoFocus placeholder='Enter Career Points' value={inputValue} onInput={(e) => handleChange(e,setInputValue)} onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints, setInputValue)} />
+            <input type="text" autoFocus placeholder='Enter Career Points:' value={inputValue} onInput={(e) => handleChange(e,setInputValue)} onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints, setInputValue)} />
         </>
     )
 }
@@ -88,35 +88,7 @@ function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
 
     }
 }
-// function InputTable({isAnimationTriggered, inputValue, setInputValue}) {
-//     const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
-//     console.log(isInitialized);
-//     // if (!isInitialized) return 'balls';
 
-//     const emptyRows = [];
-//     const maxRows = 5;
-//     for (let i = userInputAndFeedback.length; i < maxRows; i++) {
-//         emptyRows.push(<InputRow key={`empty-${i}`} index={i} guess={""} colorFeedback={[]} arrowDirection={[]} />);
-//     }
-//     return (
-//         <>
-//             <ul>
-//                 {userInputAndFeedback.map((pastGuess, index) => {
-//                     const isLast = index === userInputAndFeedback.length -1;
-//                     return <InputRow 
-//                         key={index} 
-//                         index={index} 
-//                         guess={pastGuess.guessNumber} 
-//                         colorFeedback={pastGuess.colorFeedback} 
-//                         arrowDirection={handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}
-//                         className={isLast ? "flip-in" : ""} />
-//                 })}
-//                 {!isAnimationTriggered && emptyRows}
-//             </ul>
-//             {/* {!isAnimationTriggered && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>} */}
-//         </>
-//     )
-// }
 function InputTable({ isAnimationTriggered, inputValue, setInputValue }) {
     const { userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized } = useContext(UserContext);
 
@@ -185,7 +157,7 @@ function colorFeedback(percentageDifference) {
     if (percentageDifference <= 5) {
         return "green";
     }
-    else if (percentageDifference <= 25) {
+    else if (percentageDifference <= 15) {
         return "yellow";
     }
     else {
@@ -234,13 +206,6 @@ function StaticApp() {
         <div id="page">
             <TitleBar />
             <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
-            {/* <AttemptsAndPoints userInputAndFeedback={userInputAndFeedback} /> */}
-            {/* {isAnimationTriggered &&
-                <div className='animation'>
-                    <div >{gameOverAnimationText}</div>
-                    <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
-                </div>
-            } */}
             {isInitialized && ready && <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />}
             {!isAnimationTriggered && isInitialized && ready && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
             {isAnimationTriggered &&

@@ -1,5 +1,6 @@
 import {createContext, useState } from "react";
 import image from "../img/image.png";
+import yash from "../img/yash.png"
 import { getDailyPlayerData } from "../api_calls/api";
 import { useEffect } from "react";
 import { use } from "react";
@@ -10,7 +11,7 @@ const UserContext = createContext();
 function ContextProvider({children}) {
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
-    const [playerInfo, setPlayerInfo] = useState({ image: image });
+    const [playerInfo, setPlayerInfo] = useState({ image: yash });
     const [hasFetched, setHasFetched] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false); 
 
