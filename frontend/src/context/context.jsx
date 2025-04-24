@@ -11,7 +11,7 @@ const UserContext = createContext();
 function ContextProvider({children}) {
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString('en-CA'));
     const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
-    const [playerInfo, setPlayerInfo] = useState({ image: yash });
+    const [playerInfo, setPlayerInfo] = useState();
     const [hasFetched, setHasFetched] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false); 
 
@@ -21,10 +21,10 @@ function ContextProvider({children}) {
         try {
             const data = await getDailyPlayerData(); // Fetch player object
             const fetchedPlayerInfo = {
-                ...playerInfo,
                 name: data[0].Name,
                 careerPoints: data[0].CareerPoints,
                 date: data[0].Date,
+                image: data[0].HeadshotURL
             };
             setPlayerInfo(fetchedPlayerInfo)
             localStorage.setItem("PlayerInfo", JSON.stringify(fetchedPlayerInfo));
