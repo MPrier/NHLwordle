@@ -4,20 +4,27 @@ import "./css/page.css";
 import image from './img/image.png';
 import "./css/App.css";
 import "./css/index.css";
-import { UserContext } from './context/context';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { faRankingStar } from '@fortawesome/free-solid-svg-icons';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
+import { UserContext } from './context/context';
+
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+// import { faRankingStar } from '@fortawesome/free-solid-svg-icons';
+// import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+// import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
+import { FaArrowUp } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
+import { MdLeaderboard } from "react-icons/md";
+import { IoIosCheckmark } from "react-icons/io";
 
 function TitleBar() {
     return (
         <div id='header-bar'>
             <button> ? </button>
             <h1>Puckle</h1>
-            <button><FontAwesomeIcon icon={faRankingStar} style={{color: "#ffffff",}} size='1x'/></button>
+            {/* <button><FontAwesomeIcon icon={faRankingStar} style={{color: "#ffffff",}} size='1x'/></button> */}
+            <button><MdLeaderboard size={"15px"}/></button>
         </div>
     )
 }
@@ -39,16 +46,13 @@ function AttemptsAndPoints({ userInputAndFeedback }) {
         </>
     )
 }
-
-// TODO get picture for arrow direction. fix styling  
+ 
 function InputRow({ guess, colorFeedback, arrowDirection, index, className = ''}) {
     return (
         <>
             <li className={`row ${className}`} key={index}>
                 <div className='rectangle1'>{guess}</div>
                 <div className='arrow'>{arrowDirection}</div>
-                {/* <div className={`rectangle2 rectangle2-${colorFeedback}`}>{arrowDirection}</div> */}
-                {/* <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='2x'/></div> */}
             </li>
         </>
     )
@@ -69,22 +73,28 @@ function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
     switch(arrowFeedback) {
         case 'up':
             if (colorFeedback == 'yellow') {
-                return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='3x'/></div>
+                // return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='3x'/></div>
+                return <div><FaArrowUp color='#FFD43B' size='50px' /></div>
             }
             else {
-                return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#ce1c1c",}} size='3x' /></div>
+                // return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#ce1c1c",}} size='3x' /></div>
+                return <div><FaArrowUp color='#ce1c1c' size='50px' /></div>
             }
             
         case 'down':
             if (colorFeedback == 'yellow') {
-                return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#FFD43B",}} size='3x'/></div>
+                // return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#FFD43B",}} size='3x'/></div>
+                return <div><FaArrowDown color='#FFD43B' size='50px' /></div>
             }
             else {
-                return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#ce1c1c",}} size='3x' /></div>
+                // return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#ce1c1c",}} size='3x' /></div>
+                return <div><FaArrowDown color='#ce1c1c' size='50px' /></div>
             }
 
         case 'correct':
-            return <div><FontAwesomeIcon icon={faCheck} style={{color: "#1e8f0f",}} size='3x'/></div>
+            // return <div><FontAwesomeIcon icon={faCheck} style={{color: "#1e8f0f",}} size='3x'/></div>
+            return <div><IoIosCheckmark color='#1e8f0f' size='100px'/></div>
+            // return <div><FaCheck size='50px' color='#1e8f0f'/></div>
 
     }
 }
