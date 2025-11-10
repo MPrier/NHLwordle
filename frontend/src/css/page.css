@@ -5,6 +5,7 @@ body {
 #page {
     padding: 0;
     max-width: 335px;
+    width: 100%;
     margin: auto;
 }
 
@@ -12,9 +13,9 @@ body {
     height: 359px;
     width: 299px;
     padding: 16px;
-    border: 2px solid #5a4c3b; /* gold-ish trim */
+    border: 2px solid #5a4c3b; 
     border-radius: 16px;
-    /* background: linear-gradient(to bottom, #f5f5f5, #e1d9c5); */
+    
     background: #f7f3e9;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     text-align: center;
@@ -49,15 +50,7 @@ ul {
     list-style-type:none
 }
 
-/* .rectangle2 {
-    width: 30%;
-    height: 50px;
-}
 
-.rectangle1 {
-    width: 60%;
-    height: 50px;
-} */
 
 .row {
     display: flow-root;
@@ -80,12 +73,12 @@ ul {
     transform-origin: top;
 }
 .arrow {
-    /* background-color: #28A745; */
+    
     float: right;
 }
 
 .rectangle1 {
-    width: 60%; /* Adjusted to stay within body boundaries */
+    width: 60%; 
     height: 50px;
     border-radius: 8px;
     background-color: grey;
@@ -97,7 +90,25 @@ ul {
 }
 
 
+#header-bar {
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom-color: 5a4c3b;
+    border-bottom: ridge;
+    border-bottom-width: 5px;
+    margin-bottom: 2rem;
+    color: #5a4c3b;
+    font-size: x-small;
+}
 
+button {
+    background-color: #5a4c3b;
+    width: 40px;
+    height: 30px;
+    
+}
 
 @keyframes fadeIn {
     0% {
@@ -128,7 +139,7 @@ ul {
     border-radius: 12px;
     padding: 20px;
     font-family: 'Courier New', monospace;
-    min-width: 291px;
+    
     height: 351px;
     margin: auto;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
@@ -161,8 +172,311 @@ ul {
     color: #bbb;
 }
 
+input {
+    border: 2px solid #5a4c3b;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    
+    box-sizing: border-box;
+    margin-top: 5%;
+    
+    background-color: #f7f3e9;
+    color: #1c1c1c;
+  }
+  
+  input::placeholder {
+    color :#1c1c1c;
+    font-size:small;
+  }
 
 
 
+@media (max-height: 1000px) {
+    #body {
+        height: 90%;
+    }
+    .hockey-card,
+    .input-table {
+     
+      height: 33vh;
+      
+    }
 
+    .nameplate {
+        height: 10vh;
+    }
+}
+@media (max-width: 600px) {
+    .hockey-card,
+    .input-table {
+      width: 50%;
+      /* height: auto; */
+      font-size: 0.8rem;
+    }
 
+    .player-image {
+        width: 100%;
+
+    }
+    .nameplate {
+        width: 90%;
+        font-size: 1.1rem;
+    }
+
+    
+    input {
+        width: 53%;
+    }
+  
+    .rectangle1 {
+      width: 100%;
+      float: none;
+      margin-right: 0;
+      margin-bottom: 5%;
+      height: 10%;
+      
+      
+    }
+  
+    .row {
+      display: block;
+    }
+    #page {
+        width: 100%;
+        max-width: 100%;
+        height: inherit;
+        
+    }
+
+    .arrow {
+        size: 10px;
+    }
+
+    #header-bar {
+        margin-left: 22%;
+        margin-right: 22%;
+    }
+    
+  }
+  
+/*new */
+
+   /* body {
+    background-image: linear-gradient(to bottom right, #f5f5f5, #dbe9f4);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #page {
+    padding: 0;
+    max-width: 335px;
+    width: 100%;
+    margin: auto;
+  }
+  
+  .hockey-card {
+    height: 359px;
+    width: 299px;
+    padding: 16px;
+    border: 2px solid #5a4c3b;
+    border-radius: 16px;
+    background: #f7f3e9;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    text-align: center;
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    margin: 0 auto 24px;
+    position: relative;
+    box-sizing: border-box;
+    max-width: 90vw;
+  }
+  
+  .player-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 2px solid #5a4c3b;
+    object-fit: cover;
+  }
+  
+  .nameplate {
+    width: 233px;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #5a4c3b;
+    color: #fff;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    font-family: 'Courier New', Courier, monospace;
+    max-width: 90%;
+  }
+  
+  ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .row {
+    display: flow-root;
+    align-items: center;
+    margin-top: 4%;
+  }
+  
+  @keyframes flipIn {
+    0% {
+      transform: rotateX(90deg);
+      opacity: 0;
+    }
+    100% {
+      transform: rotateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .flip-in {
+    animation: flipIn 1s ease-out;
+    transform-origin: top;
+  }
+  
+  .arrow {
+    float: right;
+  }
+  
+  .rectangle1 {
+    width: 60%;
+    height: 50px;
+    border-radius: 8px;
+    background-color: grey;
+    margin-right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  #header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 5px ridge #5a4c3b;
+    margin-bottom: 2rem;
+    color: #5a4c3b;
+    font-size: x-small;
+  }
+  
+  button {
+    background-color: #5a4c3b;
+    width: 40px;
+    height: 30px;
+    border: none;
+    color: white;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .animation {
+    animation: fadeIn 0.5s ease-out;
+    font-family: 'Courier New', monospace;
+    color: black;
+    margin-top: 24px;
+  }
+  
+  .input-table {
+    background-color: #f7f3e9;
+    border: 2px solid #5a4c3b;
+    border-radius: 12px;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+    width: 291px;
+    height: 351px;
+    margin: auto;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    max-width: 90vw;
+  }
+  
+  .stat-header {
+    display: flex;
+    border-bottom: 2px solid #5a4c3b;
+    font-weight: bold;
+    padding-bottom: 8px;
+  }
+  
+  .stat-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px dashed #c2b69d;
+    align-items: center;
+    height: 40px;
+  }
+  
+  .stat-cell {
+    flex: 1;
+    text-align: center;
+    color: #3c2e1d;
+    font-size: 1.1em;
+  }
+  
+  .input-row.empty .stat-cell {
+    color: #bbb;
+  }
+  
+  input {
+    border: 2px solid #5a4c3b;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5%;
+    background-color: #f7f3e9;
+    color: #1c1c1c;
+  }
+  
+  input::placeholder {
+    color: #1c1c1c;
+    font-size: small;
+  }
+  
+  
+  @media (max-width: 480px) {
+    .rectangle1 {
+      width: 100%;
+      float: none;
+      margin: 1em 0;
+    }
+  
+    .row {
+      display: block;
+    }
+  
+    #header-bar {
+      
+      gap: 0.5rem;
+      text-align: center;
+    }
+  
+    .nameplate {
+      width: 90%;
+      font-size: 1.2rem;
+    }
+  
+    .input-table, .hockey-card {
+      height: auto;
+    }
+  }
+   */

@@ -4,7 +4,7 @@
   /* padding: 2rem; */
   text-align: center;
   /* min-width: 400px; */
-  width: 100vh;
+  width: 100%;
 }
 
 
@@ -25,20 +25,3 @@
 }
 
 
-input {
-  border: 2px solid #5a4c3b;
-  border-radius: 8px;
-  padding: 10px;
-  width: 100%;
-  /* margin: 5px; */
-  box-sizing: border-box;
-  margin-top: 5%;
-  /* background-color: #5a4c3b; */
-  background-color: #f7f3e9;
-  color: #1c1c1c;
-}
-
-input::placeholder {
-  color :#1c1c1c;
-  font-size:small;
-}

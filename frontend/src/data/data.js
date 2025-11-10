@@ -1,0 +1,22 @@
+export const challenges = [
+  {"date": "2025-11-09", "name": "Ron Francis", "careerPoints": 1798, "image": "https://assets.nhle.com/mugs/nhl/latest/8446951.png"},
+  {"date": "2025-11-10", "name": "Stan Mikita", "careerPoints": 1467, "image": "https://assets.nhle.com/mugs/nhl/latest/8449602.png"},
+  {"date": "2025-11-11", "name": "Adam Oates", "careerPoints": 1420, "image": "https://assets.nhle.com/mugs/nhl/latest/8449951.png"},
+  {"date": "2025-11-12", "name": "Ray Bourque", "careerPoints": 1579, "image": "https://assets.nhle.com/mugs/nhl/latest/8445621.png"},
+  {"date": "2025-11-13", "name": "Joe Sakic", "careerPoints": 1641, "image": "https://assets.nhle.com/mugs/nhl/latest/8451101.png"},
+  {"date": "2025-11-14", "name": "Phil Esposito", "careerPoints": 1590, "image": "https://assets.nhle.com/mugs/nhl/latest/8446722.png"},
+  {"date": "2025-11-15", "name": "Mario Lemieux", "careerPoints": 1723, "image": "https://assets.nhle.com/mugs/nhl/latest/8448782.png"},
+  {"date": "2025-11-16", "name": "Paul Coffey", "careerPoints": 1531, "image": "https://assets.nhle.com/mugs/nhl/latest/8446117.png"},
+  {"date": "2025-11-17", "name": "Steve Yzerman", "careerPoints": 1755, "image": "https://assets.nhle.com/mugs/nhl/latest/8452578.png"},
+  {"date": "2025-11-18", "name": "Marcel Dionne", "careerPoints": 1771, "image": "https://assets.nhle.com/mugs/nhl/latest/8446430.png"},
+  {"date": "2025-11-19", "name": "Gordie Howe", "careerPoints": 1850, "image": "https://assets.nhle.com/mugs/nhl/latest/8446138.png"},
+  {"date": "2025-11-20", "name": "Alex Ovechkin", "careerPoints": 1613, "image": "https://assets.nhle.com/mugs/nhl/latest/8471214.png"},
+  {"date": "2025-11-21", "name": "Mark Messier", "careerPoints": 1887, "image": "https://assets.nhle.com/mugs/nhl/latest/8447834.png"},
+  {"date": "2025-11-22", "name": "Jaromir Jagr", "careerPoints": 1921, "image": "https://assets.nhle.com/mugs/nhl/latest/8448208.png"},
+  {"date": "2025-11-23", "name": "Teemu Selanne", "careerPoints": 1457, "image": "https://assets.nhle.com/mugs/nhl/latest/8451108.png"},
+  {"date": "2025-11-24", "name": "Mark Recchi", "careerPoints": 1533, "image": "https://assets.nhle.com/mugs/nhl/latest/8449473.png"},
+  {"date": "2025-11-25", "name": "Joe Thornton", "careerPoints": 1539, "image": "https://assets.nhle.com/mugs/nhl/latest/8466138.png"},
+  {"date": "2025-11-26", "name": "Wayne Gretzky", "careerPoints": 2857, "image": "https://assets.nhle.com/mugs/nhl/latest/8447400.png"},
+  {"date": "2025-11-27", "name": "Sidney Crosby", "careerPoints": 1677, "image": "https://assets.nhle.com/mugs/nhl/latest/8471675.png"},
+  {"date": "2025-11-28", "name": "Bryan Trottier", "careerPoints": 1425, "image": "https://assets.nhle.com/mugs/nhl/latest/8449740.png"}
+];

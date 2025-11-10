@@ -1,17 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import "./components/Header.css";
 import "./css/page.css";
-import image from './img/image.png';
 import "./css/App.css";
 import "./css/index.css";
-
-import { UserContext } from './context/context';
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-// import { faRankingStar } from '@fortawesome/free-solid-svg-icons';
-// import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-// import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { challenges } from "./data/data";
+import { setPlayerInfo, getPlayerInfo } from "./data/playerStore";
 
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
@@ -19,213 +12,237 @@ import { MdLeaderboard } from "react-icons/md";
 import { IoIosCheckmark } from "react-icons/io";
 
 function TitleBar() {
-    return (
-        <div id='header-bar'>
-            <button> ? </button>
-            <h1>Puckle</h1>
-            {/* <button><FontAwesomeIcon icon={faRankingStar} style={{color: "#ffffff",}} size='1x'/></button> */}
-            <button><MdLeaderboard size={"15px"}/></button>
-        </div>
-    )
+  return (
+    <div id="header-bar">
+      <button> ? </button>
+      <h1>Puckle</h1>
+      <button>
+        <MdLeaderboard size={"15px"} />
+      </button>
+    </div>
+  );
 }
 
-function PlayerSection({ image, text, name }) {
-    return (
-        <div className="hockey-card">
-            <img src={image} alt={text} className='player-image' />
-            <div className='nameplate'>{name}</div>
-        </div>
-    )
-}
-
-function AttemptsAndPoints({ userInputAndFeedback }) {
-    const count = 5 - userInputAndFeedback.length;
-    return (
-        <>
-            <h3>{count}/5 attempts remaining</h3>
-        </>
-    )
-}
- 
-function InputRow({ guess, colorFeedback, arrowDirection, index, className = ''}) {
-    return (
-        <>
-            <li className={`row ${className}`} key={index}>
-                <div className='rectangle1'>{guess}</div>
-                <div className='arrow'>{arrowDirection}</div>
-            </li>
-        </>
-    )
-}
-
-function InputBar({ userInputAndFeedback, setUserInputAndFeedback, inputValue, setInputValue }) {
-    let context = useContext(UserContext);
-    let playerInfo = context.playerInfo;
-    
-    return (
-        <>
-            <input type="text" autoFocus placeholder='Enter Career Points:' value={inputValue} onInput={(e) => handleChange(e,setInputValue)} onKeyDown={(e) => handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, playerInfo.careerPoints, setInputValue)} />
-        </>
-    )
+function PlayerSection({ image, name }) {
+  return (
+    <div className="hockey-card">
+      <img src={image} alt={name} className="player-image" />
+      <div className="nameplate">{name}</div>
+    </div>
+  );
 }
 
 function handleArrowFeedbackEmoji(arrowFeedback, colorFeedback) {
-    switch(arrowFeedback) {
-        case 'up':
-            if (colorFeedback == 'yellow') {
-                // return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#FFD43B",}} size='3x'/></div>
-                return <div><FaArrowUp color='#FFD43B' size='50px' /></div>
-            }
-            else {
-                // return <div><FontAwesomeIcon icon={faArrowUp} style={{color: "#ce1c1c",}} size='3x' /></div>
-                return <div><FaArrowUp color='#ce1c1c' size='50px' /></div>
-            }
-            
-        case 'down':
-            if (colorFeedback == 'yellow') {
-                // return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#FFD43B",}} size='3x'/></div>
-                return <div><FaArrowDown color='#FFD43B' size='50px' /></div>
-            }
-            else {
-                // return <div><FontAwesomeIcon icon={faArrowDown} style={{color: "#ce1c1c",}} size='3x' /></div>
-                return <div><FaArrowDown color='#ce1c1c' size='50px' /></div>
-            }
-
-        case 'correct':
-            // return <div><FontAwesomeIcon icon={faCheck} style={{color: "#1e8f0f",}} size='3x'/></div>
-            return <div><IoIosCheckmark color='#1e8f0f' size='100px'/></div>
-            // return <div><FaCheck size='50px' color='#1e8f0f'/></div>
-
-    }
+  switch (arrowFeedback) {
+    case "up":
+      return (
+        <FaArrowUp
+          color={colorFeedback === "yellow" ? "#FFD43B" : "#ce1c1c"}
+          size="50px"
+        />
+      );
+    case "down":
+      return (
+        <FaArrowDown
+          color={colorFeedback === "yellow" ? "#FFD43B" : "#ce1c1c"}
+          size="50px"
+        />
+      );
+    case "correct":
+      return <IoIosCheckmark color="#1e8f0f" size="100px" />;
+    default:
+      return null;
+  }
 }
 
-function InputTable({ isAnimationTriggered, inputValue, setInputValue }) {
-    const { userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized } = useContext(UserContext);
+function InputBar({ userInputAndFeedback, setUserInputAndFeedback, inputValue, setInputValue }) {
+  const playerInfo = getPlayerInfo();
 
-    const emptyRows = [];
-    const maxRows = 5;
-    for (let i = userInputAndFeedback.length; i < maxRows; i++) {
-        emptyRows.push(
-            <div className="input-row stat-row empty" key={`empty-${i}`}>
-                <div className="stat-cell">{i + 1}</div>
-                <div className="stat-cell">—</div>
-                <div className="stat-cell">—</div>
-            </div>
-        );
-    }
+  return (
+    <input
+      type="text"
+      autoFocus
+      placeholder="Enter Career Points:"
+      value={inputValue}
+      onInput={(e) => handleChange(e, setInputValue)}
+      onKeyDown={(e) =>
+        handleKeyDown(
+          e,
+          setUserInputAndFeedback,
+          userInputAndFeedback,
+          playerInfo.careerPoints,
+          setInputValue
+        )
+      }
+    />
+  );
+}
 
-    return (
-        <div className="input-table">
-            <div className="stat-header">
-                <div className="stat-cell">Guess #</div>
-                <div className="stat-cell">Guess</div>
-                <div className="stat-cell">Accuracy</div>
-            </div>
-            {userInputAndFeedback.map((pastGuess, index) => {
-                const isLast = index === userInputAndFeedback.length - 1;
-                return (
-                    <div className={`input-row stat-row ${isLast ? "flip-in" : ""}`} key={index}>
-                        <div className="stat-cell">{index + 1}</div>
-                        <div className="stat-cell">{pastGuess.guessNumber}</div>
-                        <div className="stat-cell">{handleArrowFeedbackEmoji(pastGuess.ArrowFeedback, pastGuess.colorFeedback)}</div>
-                    </div>
-                );
-            })}
-            {!isAnimationTriggered && emptyRows}
-        </div>
+function InputTable({ isAnimationTriggered, userInputAndFeedback }) {
+  const emptyRows = [];
+  const maxRows = 5;
+
+  for (let i = userInputAndFeedback.length; i < maxRows; i++) {
+    emptyRows.push(
+      <div className="input-row stat-row empty" key={`empty-${i}`}>
+        <div className="stat-cell">{i + 1}</div>
+        <div className="stat-cell">—</div>
+        <div className="stat-cell">—</div>
+      </div>
     );
+  }
+
+  return (
+    <div className="input-table">
+      <div className="stat-header">
+        <div className="stat-cell">Guess #</div>
+        <div className="stat-cell">Guess</div>
+        <div className="stat-cell">Accuracy</div>
+      </div>
+      {userInputAndFeedback.map((pastGuess, index) => {
+        const isLast = index === userInputAndFeedback.length - 1;
+        return (
+          <div
+            className={`input-row stat-row ${isLast ? "flip-in" : ""}`}
+            key={index}
+          >
+            <div className="stat-cell">{index + 1}</div>
+            <div className="stat-cell">{pastGuess.guessNumber}</div>
+            <div className="stat-cell">
+              {handleArrowFeedbackEmoji(
+                pastGuess.ArrowFeedback,
+                pastGuess.colorFeedback
+              )}
+            </div>
+          </div>
+        );
+      })}
+      {!isAnimationTriggered && emptyRows}
+    </div>
+  );
 }
 
 function handleChange(e, setInputValue) {
-    // Remove non-numeric characters
-    const sanitized = e.target.value.replace(/\D/g, '');
-
-  // Limit to 6 characters
-    const trimmed = sanitized.slice(0, 6);
-
-    if (Number(trimmed) === 0) {
-        setInputValue('')
-        return 
-    }
-    setInputValue(trimmed);
+  const sanitized = e.target.value.replace(/\D/g, "").slice(0, 6);
+  setInputValue(Number(sanitized) === 0 ? "" : sanitized);
 }
 
 function handleKeyDown(e, setUserInputAndFeedback, userInputAndFeedback, careerPoints, setInputValue) {
-    if (e.key === 'Enter') {
-        const num = Number(e.target.value)
-
-        if (!isNaN(num) && num > 0 && num < 1000000) {
-            const feedback = feedbackHandler(careerPoints, e.target.value);
-            localStorage.setItem("UserInputAndFeedback",JSON.stringify([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }]))
-            setUserInputAndFeedback([...userInputAndFeedback, { guessNumber: e.target.value, colorFeedback: feedback.color, ArrowFeedback: feedback.arrowFeedback }])
-            setInputValue('')
-        }
+  if (e.key === "Enter") {
+    const num = Number(e.target.value);
+    if (!isNaN(num) && num > 0 && num < 1000000) {
+      const feedback = feedbackHandler(careerPoints, num);
+      const updated = [
+        ...userInputAndFeedback,
+        {
+          guessNumber: num,
+          colorFeedback: feedback.color,
+          ArrowFeedback: feedback.arrowFeedback,
+        },
+      ];
+      localStorage.setItem("UserInputAndFeedback", JSON.stringify(updated));
+      setUserInputAndFeedback(updated);
+      setInputValue("");
     }
+  }
 }
 
 function colorFeedback(percentageDifference) {
-    if (percentageDifference <= 5) {
-        return "green";
-    }
-    else if (percentageDifference <= 15) {
-        return "yellow";
-    }
-    else {
-        return "red";
-    }
+  if (percentageDifference <= 5) return "green";
+  if (percentageDifference <= 15) return "yellow";
+  return "red";
 }
 
 function feedbackHandler(careerPoints, userGuess) {
-    careerPoints = Number(careerPoints);
-    userGuess = Number(userGuess);
-    
-    const difference = Math.abs(careerPoints - userGuess);
-    const average = (careerPoints + userGuess) / 2;
-    const percentageDifference = (difference / average) * 100;
+  const difference = Math.abs(careerPoints - userGuess);
+  const average = (careerPoints + userGuess) / 2;
+  const percentageDifference = (difference / average) * 100;
 
-    let color = colorFeedback(percentageDifference);
-    const arrowFeedback = color === "green" ? "correct" : careerPoints > userGuess ? "up" : "down";
+  const color = colorFeedback(percentageDifference);
+  const arrowFeedback = color === "green" ? "correct" : careerPoints > userGuess ? "up" : "down";
 
-    return {color, arrowFeedback};
+  return { color, arrowFeedback };
 }
 
 function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered) {
-    if (userInputAndFeedback.some((feedback) => feedback.colorFeedback === "green")) {
-        setGameOverAnimationText("You Win! :)");
-        setIsAnimationTriggered(true);
-    }
-    else if (userInputAndFeedback.length === 5) {
-        setGameOverAnimationText('You Lose :(')
-        setIsAnimationTriggered(true);
-    }
+  if (userInputAndFeedback.some((f) => f.colorFeedback === "green")) {
+    setGameOverAnimationText("You Win! :)");
+    setIsAnimationTriggered(true);
+  } else if (userInputAndFeedback.length === 5) {
+    setGameOverAnimationText("You Lose :(");
+    setIsAnimationTriggered(true);
+  }
 }
 
-function StaticApp() {
-    const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
-    const [gameOverAnimationText, setGameOverAnimationText] = useState('');
-    const {userInputAndFeedback, setUserInputAndFeedback, playerInfo, isInitialized} = useContext(UserContext);
-    const [inputValue, setInputValue] = useState('');
-    const [ready, setReady] = useState(false)
-    
-    useEffect(() => {
-        checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered);
-        setReady(true)
-    }, [userInputAndFeedback]);
-
-    return (
-        <div id="page">
-            <TitleBar />
-            <PlayerSection image={playerInfo.image} text="Example" name={playerInfo.name} />
-            {isInitialized && ready && <InputTable isAnimationTriggered={isAnimationTriggered} inputValue={inputValue} setInputValue={setInputValue} />}
-            {!isAnimationTriggered && isInitialized && ready && <InputBar userInputAndFeedback={userInputAndFeedback} setUserInputAndFeedback={setUserInputAndFeedback} inputValue={inputValue} setInputValue={setInputValue}/>}
-            {isAnimationTriggered &&
-                <div className='animation'>
-                    <div >{gameOverAnimationText}</div>
-                    <div>{playerInfo.name} has {playerInfo.careerPoints} career points</div>
-                </div>
-            }
-        </div>
-    )
+function getTodayPlayer() {
+  const today = new Date().toLocaleDateString("en-CA");
+  return challenges.find((p) => p.date === today) || challenges[Math.floor(Math.random() * challenges.length)];
 }
 
-export default StaticApp
+export default function StaticApp() {
+  const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
+  const [gameOverAnimationText, setGameOverAnimationText] = useState("");
+  const [userInputAndFeedback, setUserInputAndFeedback] = useState([]);
+  const [playerInfo, setPlayerInfoState] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("en-CA");
+    const storedDate = localStorage.getItem("UserInputDate");
+
+    if (today !== storedDate) {
+      const newPlayer = getTodayPlayer();
+      setPlayerInfo(newPlayer);
+      setPlayerInfoState(newPlayer);
+      localStorage.setItem("UserInputDate", today);
+      localStorage.setItem("UserInputAndFeedback", JSON.stringify([]));
+      localStorage.setItem("PlayerInfo", JSON.stringify(newPlayer));
+      setUserInputAndFeedback([]);
+    } else {
+      const storedPlayer = JSON.parse(localStorage.getItem("PlayerInfo"));
+      const storedFeedback = JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
+      setPlayerInfo(storedPlayer);
+      setPlayerInfoState(storedPlayer);
+      setUserInputAndFeedback(storedFeedback);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered);
+    setReady(true);
+  }, [userInputAndFeedback]);
+
+  if (!playerInfo) return null;
+
+  return (
+    <div id="page">
+      <TitleBar />
+      <PlayerSection image={playerInfo.image} name={playerInfo.name} />
+      {ready && (
+        <>
+          <InputTable
+            isAnimationTriggered={isAnimationTriggered}
+            userInputAndFeedback={userInputAndFeedback}
+          />
+          {!isAnimationTriggered && (
+            <InputBar
+              userInputAndFeedback={userInputAndFeedback}
+              setUserInputAndFeedback={setUserInputAndFeedback}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+            />
+          )}
+          {isAnimationTriggered && (
+            <div className="animation">
+              <div>{gameOverAnimationText}</div>
+              <div>
+                {playerInfo.name} has {playerInfo.careerPoints} career points
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
