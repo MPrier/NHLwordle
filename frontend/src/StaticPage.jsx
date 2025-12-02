@@ -174,8 +174,7 @@ function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAni
   }
 }
 
-function getTodayPlayer() {
-  const today = new Date().toLocaleDateString("en-CA");
+function getTodayPlayer(today) {
   return challenges.find((p) => p.date === today) || challenges[Math.floor(Math.random() * challenges.length)];
 }
 
@@ -192,7 +191,7 @@ export default function StaticApp() {
     const storedDate = localStorage.getItem("UserInputDate");
 
     if (today !== storedDate) {
-      const newPlayer = getTodayPlayer();
+      const newPlayer = getTodayPlayer(today);
       setPlayerInfo(newPlayer);
       setPlayerInfoState(newPlayer);
       localStorage.setItem("UserInputDate", today);
