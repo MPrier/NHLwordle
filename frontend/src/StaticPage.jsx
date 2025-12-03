@@ -178,6 +178,18 @@ function getTodayPlayer(today) {
   return challenges.find((p) => p.date === today) || challenges[Math.floor(Math.random() * challenges.length)];
 }
 
+function storeUserStats(result, ) {
+
+}
+
+const safeParse = (value, fallback = []) => {
+  try {
+    return JSON.parse(value) ?? fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 export default function StaticApp() {
   const [isAnimationTriggered, setIsAnimationTriggered] = useState(false);
   const [gameOverAnimationText, setGameOverAnimationText] = useState("");
@@ -188,23 +200,23 @@ export default function StaticApp() {
 
   useEffect(() => {
     const today = new Date().toLocaleDateString("en-CA");
+    const newPlayer = getTodayPlayer(today);
+
     const storedDate = localStorage.getItem("UserInputDate");
+    const storedFeedback = safeParse(localStorage.getItem("UserInputAndFeedback"));
 
     if (today !== storedDate) {
-      const newPlayer = getTodayPlayer(today);
-      setPlayerInfo(newPlayer);
-      setPlayerInfoState(newPlayer);
       localStorage.setItem("UserInputDate", today);
       localStorage.setItem("UserInputAndFeedback", JSON.stringify([]));
       localStorage.setItem("PlayerInfo", JSON.stringify(newPlayer));
+
       setUserInputAndFeedback([]);
     } else {
-      const storedPlayer = JSON.parse(localStorage.getItem("PlayerInfo"));
-      const storedFeedback = JSON.parse(localStorage.getItem("UserInputAndFeedback")) || [];
-      setPlayerInfo(storedPlayer);
-      setPlayerInfoState(storedPlayer);
       setUserInputAndFeedback(storedFeedback);
-    }
+    } 
+    
+    setPlayerInfo(newPlayer);
+    setPlayerInfoState(newPlayer);
   }, []);
 
   useEffect(() => {
