@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./components/Header.css";
 import "./css/page.css";
 import "./css/App.css";
 import "./css/index.css";
