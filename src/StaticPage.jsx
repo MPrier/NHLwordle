@@ -4,20 +4,47 @@ import "./css/App.css";
 import "./css/index.css";
 import { challenges } from "./data/data";
 import { setPlayerInfo, getPlayerInfo } from "./data/playerStore";
-
+import { loadStats, saveStats } from "./data/statsStore";
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 import { IoIosCheckmark } from "react-icons/io";
+import { Link } from "react-router-dom";
+
+function finishGame(didWin, guessesCount) {
+  const today = new Date().toLocaleDateString("en-CA");
+  const stats = loadStats();
+
+  if (stats.lastPlayedDay === today) return;
+
+  stats.gamesPlayed++;
+
+  if (didWin) {
+    stats.wins++;
+    stats.currentStreak++;
+    stats.bestStreak = Math.max(stats.bestStreak, stats.currentStreak);
+    stats.guessDistribution[guessesCount - 1]++;
+  } else {
+    stats.currentStreak = 0;
+  }
+  stats.lastPlayedDay = today;
+  saveStats(stats);
+}
 
 function TitleBar() {
   return (
     <div id="header-bar">
-      <button> ? </button>
+      <Link to="/how-to-play">
+        <button> ? </button>
+      </Link>
+
       <h1>Puckle</h1>
-      <button>
-        <MdLeaderboard size={"15px"} />
-      </button>
+
+      <Link to="/stats">
+        <button>
+          <MdLeaderboard size={"15px"} />
+        </button>
+      </Link>
     </div>
   );
 }
@@ -164,12 +191,16 @@ function feedbackHandler(careerPoints, userGuess) {
 }
 
 function checkGameState(userInputAndFeedback, setGameOverAnimationText, setIsAnimationTriggered) {
+  const guessesCount = userInputAndFeedback.length;
+
   if (userInputAndFeedback.some((f) => f.colorFeedback === "green")) {
     setGameOverAnimationText("You Win! :)");
     setIsAnimationTriggered(true);
+    finishGame(true, guessesCount);
   } else if (userInputAndFeedback.length === 5) {
     setGameOverAnimationText("You Lose :(");
     setIsAnimationTriggered(true);
+    finishGame(false, guessesCount);
   }
 }
 
