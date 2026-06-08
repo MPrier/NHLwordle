@@ -10,7 +10,7 @@ function TitleBar() {
       <button> ? </button>
     </Link>
 
-    <h1>Puckle</h1>
+    <h1>Puckle 🏒</h1>
 
     <Link to="/stats">
         <button>
