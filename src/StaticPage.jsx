@@ -9,6 +9,7 @@ import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 import { IoIosCheckmark } from "react-icons/io";
+import { FaShareAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function finishGame(didWin, guessesCount) {
@@ -208,6 +209,53 @@ function getTodayPlayer(today) {
   return challenges.find((p) => p.date === today) || challenges[Math.floor(Math.random() * challenges.length)];
 }
 
+function getEmojiForFeedback(arrowFeedback, colorFeedback) {
+  if (arrowFeedback === "correct") return "✅";
+  if (arrowFeedback === "up") return colorFeedback === "yellow" ? "🟨⬆️" : "🟥⬆️";
+  if (arrowFeedback === "down") return colorFeedback === "yellow" ? "🟨⬇️" : "🟥⬇️";
+  return "";
+}
+
+function generateShareText(userInputAndFeedback, playerName) {
+  const stats = loadStats();
+  const today = new Date().toLocaleDateString("en-CA");
+  
+  let shareText = `Puckle - ${today}\n`;
+  shareText += `Current Win Streak: ${stats.currentStreak} 🔥\n\n`;
+  shareText += `Today's Game - ${playerName}\n`;
+  
+  userInputAndFeedback.forEach((guess, index) => {
+    const emoji = getEmojiForFeedback(guess.ArrowFeedback, guess.colorFeedback);
+    shareText += `${index + 1}. ${emoji}\n`;
+  });
+  
+  shareText += `\nPlay at: https://mprier.github.io/NHLwordle/`;
+  
+  return shareText;
+}
+
+function ShareButton({ userInputAndFeedback, playerName }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const shareText = generateShareText(userInputAndFeedback, playerName);
+    
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  return (
+    <button onClick={handleShare} className="share-button">
+      {copied ? "Copied! ✓" : "Share 📤"}
+    </button>
+  );
+}
+
 function storeUserStats(result, ) {
 
 }
@@ -280,6 +328,10 @@ export default function StaticApp() {
               <div>
                 {playerInfo.name} has {playerInfo.careerPoints} career points
               </div>
+              <ShareButton 
+                userInputAndFeedback={userInputAndFeedback} 
+                playerName={playerInfo.name}
+              />
             </div>
           )}
         </>

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { MdLeaderboard } from "react-icons/md";
 import { loadStats } from "./data/statsStore";
 import { Link } from "react-router-dom";
@@ -19,7 +20,12 @@ function TitleBar() {
 }
 
 export default function Leaderboard() {
-  const stats = loadStats();
+  const [stats, setStats] = useState(loadStats());
+
+  useEffect(() => {
+    // Reload stats every time the component mounts
+    setStats(loadStats());
+  }, []);
 
   return (
     <div id="page" style={{ fontFamily: "'Courier New', monospace", color: "#5a4c3b" }}>
